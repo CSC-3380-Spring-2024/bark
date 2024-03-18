@@ -4,13 +4,16 @@ import Profile from './Profile'
 import Chat from './Chat'
 import Other from './Other'
 import LandingPage from './LandingPage'
+
+
 const Tab = createBottomTabNavigator();
 
-
+//initialRouteName="LandingPage"
+//<Tab.Screen name = "LandingPage" component={LandingPage} options={{}}/>
 export default function Navbar(){
     return(
-        <Tab.Navigator initialRouteName="LandingPage">
-            <Tab.Screen name = "LandingPage" component={LandingPage} options={{}}/>
+        <Tab.Navigator>
+            
             <Tab.Screen name = "Home" component={Home} />
             <Tab.Screen name = "Other" component = {Other} />
             <Tab.Screen name = "Chat" component={Chat} />
