@@ -4,6 +4,7 @@ import Profile from './Profile'
 import Chat from './Chat'
 import Other from './Other'
 import LandingPage from './LandingPage'
+import Onboarding from './Onboarding'
 
 
 const Tab = createBottomTabNavigator();
@@ -18,6 +19,7 @@ export default function Navbar(){
             <Tab.Screen name = "Other" component = {Other} />
             <Tab.Screen name = "Chat" component={Chat} />
             <Tab.Screen name = "Profile" component={Profile} />
+            <Tab.Screen name = "Onboarding" component = {Onboarding} />
         </Tab.Navigator>
     )
 }
