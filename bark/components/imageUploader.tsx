@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Pressable, Text, StyleSheet, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker"
+import {FIREBASE_STORAGE, FIREBASE_AUTH} from '../FirebaseConfig'
+import {ref, uploadBytes, uploadBytesResumable} from "@firebase/storage"
 
-
-export function ImageUploader(){
-    const [image,setImage] = useState<String | null>(null);
+export function ImageUploader({index}: {index: number}){
+    const [image,setImage] = useState<string>("");
     
     const imageUploader = async () => {
         try{
@@ -17,11 +18,27 @@ export function ImageUploader(){
 
             if(!result.canceled){
                 setImage(result.assets[0].uri);
-                console.log(result.assets[0].uri);
+                const response = await fetch(result.assets[0].uri);
+                await firebaseUpload(response);
             }
         }catch (error){
             console.log(error);
         }
+    }
+
+    const firebaseUpload = async (response: Response) =>{
+        const imgName =  `profileImage${index}`;
+        const imgPath = `/images/${FIREBASE_AUTH.currentUser?.uid}/${imgName}`;
+        const storageRef = ref(FIREBASE_STORAGE, imgPath)
+        console.log("stprage ref" + storageRef)
+
+        //const response = await fetch(image);
+        const blob = await response.blob();
+        console.log("uploading!\n");
+        
+
+        uploadBytesResumable(storageRef,blob)
+        
     }
 
 

@@ -1,25 +1,30 @@
-import { View, Text, StyleSheet, Button, Pressable, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Button, Pressable, ScrollView, TextInput } from "react-native";
 import * as ImagePicker from "expo-image-picker"
 
 import { ImageUploader } from "../components/imageUploader";
+import { useState } from "react";
+
 
 
 
 export default function Onboarding({ navigation }: {navigation: any}){
-
+    const [name,setName] = useState<string>("");
 
 
 
     return(
         <>
-        <Text> First, lets get some pictures.</Text>
-        <ScrollView  horizontal= {true} style = {styles.profileImagesContainer}>
-            {/* Make an array usestate that updates for each image. 5 images max?*/}
-            <ImageUploader />
-            <ImageUploader />
-            <ImageUploader />
-            <ImageUploader />
-            <ImageUploader />
+        <ScrollView>
+            <Text>Lets start with your name</Text>
+            <TextInput onChangeText = {setName} value={name} placeholder="Type YOUR name here"></TextInput>
+            <Text> Next, lets get some pictures.</Text>
+            <ScrollView  horizontal= {true} style = {styles.profileImagesContainer}>
+                <ImageUploader index = {0}/>
+                <ImageUploader index = {1}/>
+                <ImageUploader index = {2}/>
+                <ImageUploader index = {3}/>
+                <ImageUploader index = {4}/>
+            </ScrollView>
         </ScrollView>
        </>
     );
