@@ -7,8 +7,9 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker";
 
+import { FIREBASE_DATABASE, FIREBASE_AUTH } from "../FirebaseConfig";
+import { set, ref } from "@firebase/database";
 import { ImageUploader } from "../components/imageUploader";
 import { Chips } from "../components/Chips";
 import { useState } from "react";
@@ -17,50 +18,103 @@ export default function Onboarding({ navigation }: { navigation: any }) {
   const [name, setName] = useState<string>("");
   const [dogName, setDogName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
+  const [tags, setTags] = useState([15]);
+
+  const submitScreen = async () => {
+    const response = await set(
+      ref(FIREBASE_DATABASE, "users/" + FIREBASE_AUTH.currentUser?.uid),
+      {
+        name: name,
+        dogName: dogName,
+        bio: bio,
+        onBoarded: true,
+      }
+    ).then((reply) => {
+      console.log(reply);
+    });
+  };
 
   return (
     <>
-      <ScrollView>
+      <ScrollView style={styles.mainContainer}>
         {/*Get Owner's and Dog's name */}
-        <Text>Lets start with your name</Text>
-        <TextInput
-          onChangeText={setName}
-          value={name}
-          placeholder="Type YOUR name here"
-        ></TextInput>
-        <Text>Then lets get your dog's name</Text>
-        <TextInput
-          onChangeText={setDogName}
-          value={dogName}
-          placeholder="Type your DOG's name here"
-        ></TextInput>
-
+        <View style={styles.screen}>
+          <Text style={styles.text}>Name</Text>
+          <TextInput
+            onChangeText={setName}
+            value={name}
+            style={styles.textInputs}
+            placeholder="Type YOUR name here"
+          ></TextInput>
+        </View>
+        <View style={styles.screen}>
+          <Text style={styles.text}>Then lets get your dog's name</Text>
+          <TextInput
+            onChangeText={setDogName}
+            value={dogName}
+            style={styles.textInputs}
+            placeholder={'ex: "susie"'}
+          ></TextInput>
+        </View>
         {/*Then get pictures */}
-        <Text> Next, lets get some pictures.</Text>
-        <ScrollView horizontal={true} style={styles.profileImagesContainer}>
-          <ImageUploader index={0} />
-          <ImageUploader index={1} />
-          <ImageUploader index={2} />
-          <ImageUploader index={3} />
-          <ImageUploader index={4} />
-        </ScrollView>
-
+        <View style={styles.screen}>
+          <Text style={styles.text}> Next, lets get some pictures.</Text>
+          <ScrollView horizontal={true} style={styles.profileImagesContainer}>
+            <ImageUploader index={0} />
+            <ImageUploader index={1} />
+            <ImageUploader index={2} />
+            <ImageUploader index={3} />
+            <ImageUploader index={4} />
+          </ScrollView>
+        </View>
         {/*Get profile bio*/}
-        <Text>Now, lets get to know about your pup!</Text>
-        <TextInput
-          onChangeText={setBio}
-          value={bio}
-          placeholder="Bio here..."
-          maxLength={240}
-          multiline={true}
-        ></TextInput>
-
+        <View style={styles.screen}>
+          <Text style={styles.text}>Now, lets get to know about your pup!</Text>
+          <TextInput
+            onChangeText={setBio}
+            value={bio}
+            placeholder="Bio here..."
+            maxLength={240}
+            multiline={true}
+            scrollEnabled={false}
+            style={styles.textInputsBio}
+          ></TextInput>
+        </View>
         {/*Get tags for the profile*/}
-        <Text>Now Select all that apply</Text>
-        <Chips onPress={() => {}} chipTitle="Sample" />
-        <Pressable>
-          <Text>Finish profile</Text>
-        </Pressable>
+        <View style={styles.screen}>
+          <Text style={styles.text}>Now Select all that apply</Text>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-around" }}
+          >
+            <View>
+              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {}} chipTitle="Sample" />
+            </View>
+            <View>
+              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {}} chipTitle="Sample" />
+            </View>
+            <View>
+              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {}} chipTitle="Sample" />
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.screen}>
+          <Pressable onPress={submitScreen}>
+            <Text>Finish profile</Text>
+          </Pressable>
+        </View>
       </ScrollView>
     </>
   );
@@ -70,6 +124,33 @@ const styles = StyleSheet.create({
   profileImagesContainer: {
     flexDirection: "row",
     height: 260,
+    marginLeft: 0,
+  },
+  screen: {
+    marginTop: "65%",
+    marginBottom: "55%",
+  },
+  text: {
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+  centered: {},
+  mainContainer: {},
+  textInputs: {
+    borderColor: "black",
+    borderWidth: 1,
+    borderRadius: 10,
+    height: 60,
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  textInputsBio: {
+    borderColor: "black",
+    borderWidth: 1,
+    borderRadius: 10,
+    height: 160,
+    fontSize: 15,
+    padding: 10,
   },
 });
 

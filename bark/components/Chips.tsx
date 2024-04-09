@@ -28,8 +28,9 @@ export function Chips({
 
 const styles = StyleSheet.create({
   container: {
-    width: 150,
+    width: 125,
     height: 50,
+    marginBottom: 15,
     borderRadius: 45,
     shadowColor: "#000",
     shadowOffset: {
