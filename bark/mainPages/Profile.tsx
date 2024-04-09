@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {View, Text, StyleSheet, Image, ScrollView, Button, Alert, Pressable} from 'react-native'
 //import { ScrollView } from 'react-native-gesture-handler';
 import { blue } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
@@ -101,7 +101,6 @@ type userProps = {
     bio: string,
     dogNames: string,
     humanName: string,
-    navigation: 
 }
 
 const Profile = (props: userProps) => (
@@ -117,10 +116,10 @@ const Profile = (props: userProps) => (
                   </View>
         </View>
             <ScrollView  horizontal> 
-                <Image source = {require("./coolahhdog.jpg")} style = {styles.image}></Image>
+                {/* <Image source = {require("./coolahhdog.jpg")} style = {styles.image}></Image>
                 <Image source = {require("./corgi1.jpg")} style = {styles.image} ></Image>
                 <Image source = {require("./corgi2.jpg")} style = {styles.image} ></Image>
-                <Image source = {require("./corgi3.jpg")} style = {styles.image} ></Image>
+                <Image source = {require("./corgi3.jpg")} style = {styles.image} ></Image> */}
             </ScrollView>            
             <Text style ={styles.infoText}>bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio</Text>
     </View>
