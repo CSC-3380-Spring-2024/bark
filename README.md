@@ -9,15 +9,15 @@ To start the project with Expo, follow these steps:
 
 
 2. **Navigate to the project directory:**
-cd bark/
+`cd bark/`
 
 
 3. **Install dependencies:**
-npm install
+`npm install`
 
 
 4. **Start the project:**
-npm start
+`npm start`
 
 
 5. **Scan the QR code:**

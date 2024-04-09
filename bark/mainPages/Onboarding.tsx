@@ -18,7 +18,7 @@ export default function Onboarding({ navigation }: { navigation: any }) {
   const [name, setName] = useState<string>("");
   const [dogName, setDogName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
-  const [tags, setTags] = useState([15]);
+  const tags = new Array(15).fill(false)
 
   const submitScreen = async () => {
     const response = await set(
@@ -28,6 +28,7 @@ export default function Onboarding({ navigation }: { navigation: any }) {
         dogName: dogName,
         bio: bio,
         onBoarded: true,
+        tags: tags,
       }
     ).then((reply) => {
       console.log(reply);
@@ -87,25 +88,25 @@ export default function Onboarding({ navigation }: { navigation: any }) {
             style={{ flexDirection: "row", justifyContent: "space-around" }}
           >
             <View>
-              <Chips onPress={() => {}} chipTitle="Sample" />
-              <Chips onPress={() => {}} chipTitle="Sample" />
-              <Chips onPress={() => {}} chipTitle="Sample" />
-              <Chips onPress={() => {}} chipTitle="Sample" />
-              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[0] = !tags[0]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[1] = !tags[1]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[2] = !tags[2]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[3] = !tags[3]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[4] = !tags[4]}} chipTitle="Sample" />
             </View>
             <View>
-              <Chips onPress={() => {}} chipTitle="Sample" />
-              <Chips onPress={() => {}} chipTitle="Sample" />
-              <Chips onPress={() => {}} chipTitle="Sample" />
-              <Chips onPress={() => {}} chipTitle="Sample" />
-              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[5] = !tags[5]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[6] = !tags[6]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[7] = !tags[7]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[8] = !tags[8]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[9] = !tags[9]}} chipTitle="Sample" />
             </View>
             <View>
-              <Chips onPress={() => {}} chipTitle="Sample" />
-              <Chips onPress={() => {}} chipTitle="Sample" />
-              <Chips onPress={() => {}} chipTitle="Sample" />
-              <Chips onPress={() => {}} chipTitle="Sample" />
-              <Chips onPress={() => {}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[10] = !tags[10]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[11] = !tags[11]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[12] = !tags[12]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[13] = !tags[13]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[14] = !tags[14]}} chipTitle="Sample" />
             </View>
           </View>
         </View>
