@@ -1,5 +1,25 @@
 # Team-7
 # "Dog tinder"
-Our plan is to create an app that can match two people, such that they 
-can meet for a doggy play-date. The main purpose is to provide an avenue
-for dog owners to let their pups have some social time with other dogs.
+## Getting Started with Expo
+
+To start the project with Expo, follow these steps:
+
+1. **Clone the repository:**
+`git clone https://github.com/CSC-3380-Spring-2024/Team-7.git`
+
+
+2. **Navigate to the project directory:**
+`cd bark/`
+
+
+3. **Install dependencies:**
+`npm install`
+
+
+4. **Start the project:**
+`npm start`
+
+
+5. **Scan the QR code:**
+- Open the Expo Go app on your mobile device.
+- Scan the QR code displayed in the terminal, Or open it within your favorite mobile simulator
