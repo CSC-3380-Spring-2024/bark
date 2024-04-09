@@ -1,37 +1,12 @@
 
 import React, { useState } from 'react';
-import {View, Text, StyleSheet, Image, ScrollView, Button, Alert, Pressable} from 'react-native'
+import {View, Text, StyleSheet, Image, ScrollView, Button, Alert, Pressable} from 'react-native';
+
+import { FIREBASE_DATABASE, FIREBASE_AUTH, } from "../FirebaseConfig";
+import {ref, onValue } from '@firebase/database'
 //import { ScrollView } from 'react-native-gesture-handler';
 import { blue } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 import Home from './Home';
-// import pic from '../../assets/adventuretime.png';
-
-// export default function Profile(){
-//     return(
-//         // <>
-//         //     <View style={{flex: 7, flexDirection:'row'}}>
-//         //         <Image source = {require('./coolahhdog.jpg')} style = {styles.profilePic} ></Image>
-//         //         <Text style ={styles.username}> CoolAhhDog21 </Text>
-//         //     </View>
-//         //     <View style={{}}>
-
-//         //     </View>
-//         //     <View style={{flex: 1 , alignItems: 'flex-start'}}>
-//         //         <Text style ={styles.dognouns}>he/him and boy dog </Text>
-//         //     </View>
-//         //     <View style={{flex: 10 , alignItems: 'flex-start'}}>
-//         //         <Text style ={styles.bioText}>just some cool ahh dog fr </Text>
-//         //     </View>
-//         //     <View style ={{flex:15}}>
-//         //         <Image source = {require("./adventuretime.png")} style = {styles.image} ></Image>
-//         //     </View>
-//         // </>
-//        <ScrollView>
-//             <Image source = {require('./coolahhdog.jpg')} style = {styles.profilePic} ></Image>
-//        </ScrollView>
-//     );
-// }
-
 
 const styles = StyleSheet.create({
     username: {
@@ -104,12 +79,25 @@ type userProps = {
     humanName: string,
 }
 
-const Profile = (props: userProps) => (
-    <View>
+
+
+
+
+export default function Profile(){
+
+
+    const [userData, setUserData] = useState<any>();
+    const userRef = ref(FIREBASE_DATABASE, "users/" + FIREBASE_AUTH.currentUser?.uid + "/");
+    onValue(userRef, (snapshot) => {
+        setUserData(snapshot);
+    });
+    return(
+
+        <View>
         <View style={{flexDirection:'row'}}>
                   <Image source = {require('./coolahhdog.jpg')} style = {styles.profilePic} ></Image>
                   <View style={{alignItems:'flex-start', marginHorizontal: 5}}>
-                    <Text style ={styles.username}>username </Text>
+                    <Text style ={styles.username}>{userData.name} </Text>
                     <Text style ={styles.dognouns}>he/him and he/him </Text>
                     <Pressable style = {styles.button}>
                         <Text style={styles.buttonText}>Edit Profile</Text>
@@ -124,6 +112,6 @@ const Profile = (props: userProps) => (
             </ScrollView>            
             <Text style ={styles.infoText}>bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio bio</Text>
     </View>
-  );
-  
-export default Profile;
+    );
+}
+//export default Profile;
