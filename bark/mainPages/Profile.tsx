@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Chips } from "../components/Chips";
 import {
   View,
   Text,
@@ -17,15 +18,13 @@ import {
 } from "../FirebaseConfig";
 import { ref, get } from "@firebase/database";
 import { ref as storageRef, getDownloadURL } from "@firebase/storage";
-//import { ScrollView } from 'react-native-gesture-handler';
-import { blue } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
-import Home from "./Home";
 
 const styles = StyleSheet.create({
   username: {
     fontSize: 35,
     color: "black",
     flexWrap: "wrap",
+    marginTop: 5
   },
   infoText: {
     fontSize: 20,
@@ -95,11 +94,13 @@ export default function Profile() {
   const [name, setName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [pronouns, setPronouns] = useState<string>("");
+  const [dogName, setDogName] = useState<string>("");
   const [image0, setImage0] = useState<string>();
   const [image1, setImage1] = useState<string>();
   const [image2, setImage2] = useState<string>();
   const [image3, setImage3] = useState<string>();
   const [image4, setImage4] = useState<string>();
+  const [tags, setTags] = useState<boolean[]>();
 
   const images = new Array(5).fill("");
 
@@ -115,6 +116,7 @@ export default function Profile() {
       setName(snapshot.val().name);
       setBio(snapshot.val().bio);
       setPronouns(snapshot.val().pronouns);
+      setDogName(snapshot.val().dogName);
     } else {
     }
   });
@@ -159,6 +161,8 @@ export default function Profile() {
       }
     };
 
+
+
     if (image0 == undefined) {
       getImage();
     }
@@ -168,7 +172,7 @@ export default function Profile() {
       <View style={{ flexDirection: "row" }}>
         <Image source={{ uri: image0 }} style={styles.profilePic}></Image>
         <View style={{ alignItems: "flex-start", marginHorizontal: 5 }}>
-          <Text style={styles.username}>{name} </Text>
+          <Text style={styles.username}>{name} & {dogName}</Text> 
           {pronouns && <Text style={styles.dognouns}>{pronouns} </Text>}
           <Pressable style={styles.button}>
             <Text style={styles.buttonText}>Edit Profile</Text>
@@ -186,4 +190,3 @@ export default function Profile() {
     </View>
   );
 }
-//export default Profile;
