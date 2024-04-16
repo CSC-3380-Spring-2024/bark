@@ -21,17 +21,18 @@ import { ref as storageRef, getDownloadURL } from "@firebase/storage";
 
 const styles = StyleSheet.create({
     username: {
-        fontSize: 25,
+        fontSize: 35,
         color: "black",
         flexWrap: "wrap",
-        marginTop: 5
+        marginTop: 5,
+        marginVertical:5
     },
     infoText: {
         fontSize: 20,
         color: "black",
-        marginVertical: 5,
+        marginVertical:0,
         alignSelf: "center",
-        marginHorizontal:5,
+        marginHorizontal:10,
     },
     dognouns: {
         fontSize: 15,
@@ -43,8 +44,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     image: {
-        width: 225,
-        height: 300,
+        width: 195,
+        height: 260,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
         borderTopLeftRadius: 10,
@@ -74,21 +75,32 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 10,
         marginRight: 5,
         marginVertical: 5,
+        //flexDirection:'row-reverse',
+        alignSelf:'flex-end'
   },
     buttonText: {
         fontSize: 20,
         alignSelf: "center",
   },
+    line:{
+      fontSize:30,
+      alignSelf:'stretch'
+  },
+    title:{
+      fontSize:25,
+      marginHorizontal:10,
+      marginBottom: 10
+    }
 });
 
-type userProps = {
-  username: string;
-  dognouns: string;
-  loggedin: boolean;
-  bio: string;
-  dogNames: string;
-  humanName: string;
-};
+// type userProps = {
+//   username: string;
+//   dognouns: string;
+//   loggedin: boolean;
+//   bio: string;
+//   dogNames: string;
+//   humanName: string;
+// };
 
 export default function Profile() {
   //ALL STATE HOOKS
@@ -172,47 +184,58 @@ export default function Profile() {
   }, []);
   return (
     <View>
-        <View style={{ flexDirection: "row", flexWrap: 'nowrap' }}>
-            <Image source={{ uri: image0 }} style={styles.profilePic}></Image>
-                <View style={{ alignItems: "flex-start", marginHorizontal: 5 }}>
-                    <Text style={styles.username}>{dogName}</Text>
-                    <Text>& {name}</Text> 
-                    {pronouns && <Text style={styles.dognouns}>{pronouns} </Text>}
-                    <Pressable style={styles.button}>
-                        <Text style={styles.buttonText}>Edit Profile</Text>
-                    </Pressable>
-                </View>
-        </View>
-      <ScrollView horizontal={true} >
-        {image0 && <Image style={styles.image} source={{ uri: image0 }} />}
-        {image1 && <Image style={styles.image} source={{ uri: image1 }} />}
-        {image2 && <Image style={styles.image} source={{ uri: image2 }} />}
-        {image3 && <Image style={styles.image} source={{ uri: image3 }} />}
-        {image4 && <Image style={styles.image} source={{ uri: image4 }} />}
-    </ScrollView>
-    <Text style={styles.infoText}>{bio}</Text>
-    <ScrollView horizontal = {true} style= {{flexDirection: "row"}}>
-            {tags[0] && <Chips onPress={() => {}} chipTitle="1" />}
-            {tags[1] && <Chips onPress={() => {}} chipTitle="2" />}
-            {tags[2] && <Chips onPress={() => {}} chipTitle="3" />}
-            {tags[3] && <Chips onPress={() => {}} chipTitle="4" />}
-            {tags[4] && <Chips onPress={() => {}} chipTitle="5" />}
-            {tags[5] && <Chips onPress={() => {}} chipTitle="6" />}
-            {tags[6] && <Chips onPress={() => {}} chipTitle="7" />}
-            {tags[7] && <Chips onPress={() => {}} chipTitle="8" />}
-            {tags[8] && <Chips onPress={() => {}} chipTitle="9" />}
-            {tags[9] && <Chips onPress={() => {}} chipTitle="10" />}
-            {tags[10] && <Chips onPress={() => {}} chipTitle="11" />}
-            {tags[11] && <Chips onPress={() => {}} chipTitle="12" />}
-            {tags[12] && <Chips onPress={() => {}} chipTitle="13" />}
-            {tags[13] && <Chips onPress={() => {}} chipTitle="14" />}
-            {tags[14] && <Chips onPress={() => {}} chipTitle="15" />}
-            <Chips onPress={() => {tags[0] = !tags[0]}} chipTitle="{Sample}" />
-              <Chips onPress={() => {tags[1] = !tags[1]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[2] = !tags[2]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[3] = !tags[3]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[4] = !tags[4]}} chipTitle="Sample" />
-    </ScrollView>
+      <View style={{ flexGrow:1, marginHorizontal:15 }}>
+              <View style = {{flexDirection:'row', justifyContent:'space-between'}}> 
+                <Text style={styles.username}>{dogName}</Text>
+                <Pressable style={styles.button}>
+                  <Text style={styles.buttonText}>Edit Profile</Text>
+                </Pressable>
+              </View>
+              
+              {/* <Text>& {name}</Text>  */}
+              {/* {pronouns && <Text style={styles.dognouns}>{pronouns} </Text>} */}
+              <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+              <View style={{ height: 2, backgroundColor: 'black', marginBottom:10}} />
+      </View>
+      <View style={{flexGrow:1}}>
+        <ScrollView horizontal={true}>
+          {image0 && <Image style={styles.image} source={{ uri: image0 }} />}
+          {image1 && <Image style={styles.image} source={{ uri: image1 }} />}
+          {image2 && <Image style={styles.image} source={{ uri: image2 }} />}
+          {image3 && <Image style={styles.image} source={{ uri: image3 }} />}
+          {image4 && <Image style={styles.image} source={{ uri: image4 }} />}
+        </ScrollView>
+      </View>
+      <View style={{flexGrow:1}}>
+        <View style={{ height: 2, backgroundColor: 'black', marginHorizontal:15, marginVertical:5, marginTop:15}} />
+        <Text style={styles.title}>Bio:</Text>
+        
+        <Text style={styles.infoText}>{bio}</Text>
+        <View style={{ height: 2, backgroundColor: 'black', marginHorizontal:15, marginVertical:5, marginBottom:15}} />
+        <Text style={styles.title}>Tags:</Text>
+        <ScrollView horizontal = {true} style= {{flexDirection: "row"}}>
+                {/* {tags[0] && <Chips onPress={() => {}} chipTitle="1" />}
+                {tags[1] && <Chips onPress={() => {}} chipTitle="2" />}
+                {tags[2] && <Chips onPress={() => {}} chipTitle="3" />}
+                {tags[3] && <Chips onPress={() => {}} chipTitle="4" />}
+                {tags[4] && <Chips onPress={() => {}} chipTitle="5" />}
+                {tags[5] && <Chips onPress={() => {}} chipTitle="6" />}
+                {tags[6] && <Chips onPress={() => {}} chipTitle="7" />}
+                {tags[7] && <Chips onPress={() => {}} chipTitle="8" />}
+                {tags[8] && <Chips onPress={() => {}} chipTitle="9" />}
+                {tags[9] && <Chips onPress={() => {}} chipTitle="10" />}
+                {tags[10] && <Chips onPress={() => {}} chipTitle="11" />}
+                {tags[11] && <Chips onPress={() => {}} chipTitle="12" />}
+                {tags[12] && <Chips onPress={() => {}} chipTitle="13" />}
+                {tags[13] && <Chips onPress={() => {}} chipTitle="14" />}
+                {tags[14] && <Chips onPress={() => {}} chipTitle="15" />} */}
+                <Chips onPress={() => {tags[0] = !tags[0]}} chipTitle="Buttons" />
+                <Chips onPress={() => {tags[1] = !tags[1]}} chipTitle="Saying" />
+                <Chips onPress={() => {tags[2] = !tags[2]}} chipTitle="Stuff" />
+                <Chips onPress={() => {tags[3] = !tags[3]}} chipTitle="About" />
+                <Chips onPress={() => {tags[4] = !tags[4]}} chipTitle="Dog" />
+        </ScrollView>
+      </View>
     </View>
   );
 }
