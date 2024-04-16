@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Chips } from "../components/Chips";
 import {
   View,
@@ -20,62 +20,64 @@ import { ref, get } from "@firebase/database";
 import { ref as storageRef, getDownloadURL } from "@firebase/storage";
 
 const styles = StyleSheet.create({
-  username: {
-    fontSize: 35,
-    color: "black",
-    flexWrap: "wrap",
-    marginTop: 5
+    username: {
+        fontSize: 25,
+        color: "black",
+        flexWrap: "wrap",
+        marginTop: 5
+    },
+    infoText: {
+        fontSize: 20,
+        color: "black",
+        marginVertical: 5,
+        alignSelf: "center",
+        marginHorizontal:5,
+    },
+    dognouns: {
+        fontSize: 15,
+        color: "black",
+    },
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    image: {
+        width: 225,
+        height: 300,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        marginHorizontal: 5,
   },
-  infoText: {
-    fontSize: 20,
-    color: "black",
-    marginVertical: 5,
-    alignSelf: "center",
+    profilePic: {
+        width: 100,
+        height: 100,
+        borderBottomLeftRadius: 50,
+        borderBottomRightRadius: 50,
+        borderTopLeftRadius: 50,
+        borderTopRightRadius: 50,
+        borderColor: "black",
+        borderWidth: 3,
+        alignSelf: "center",
+        marginVertical: 5,
+        marginHorizontal:5,
   },
-  dognouns: {
-    fontSize: 15,
-    color: "black",
+    button: {
+        borderBlockColor: "black",
+        borderColor: "black",
+        backgroundColor: "gainsboro",
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        marginRight: 5,
+        marginVertical: 5,
   },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  image: {
-    width: 225,
-    height: 300,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    marginHorizontal: 5,
-  },
-  profilePic: {
-    width: 100,
-    height: 100,
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    borderColor: "black",
-    borderWidth: 3,
-    alignSelf: "center",
-    marginVertical: 5,
-  },
-  button: {
-    borderBlockColor: "black",
-    borderColor: "black",
-    backgroundColor: "gainsboro",
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    marginRight: 5,
-    marginVertical: 5,
-  },
-  buttonText: {
-    fontSize: 20,
-    alignSelf: "center",
+    buttonText: {
+        fontSize: 20,
+        alignSelf: "center",
   },
 });
 
@@ -100,7 +102,7 @@ export default function Profile() {
   const [image2, setImage2] = useState<string>();
   const [image3, setImage3] = useState<string>();
   const [image4, setImage4] = useState<string>();
-  const [tags, setTags] = useState<boolean[]>();
+  const [tags, setTags] = useState<boolean[]>([false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,]);
 
   const images = new Array(5).fill("");
 
@@ -117,6 +119,7 @@ export default function Profile() {
       setBio(snapshot.val().bio);
       setPronouns(snapshot.val().pronouns);
       setDogName(snapshot.val().dogName);
+      setTags(useMemo(()=>snapshot.val().tags, [tags]));
     } else {
     }
   });
@@ -169,24 +172,47 @@ export default function Profile() {
   }, []);
   return (
     <View>
-      <View style={{ flexDirection: "row" }}>
-        <Image source={{ uri: image0 }} style={styles.profilePic}></Image>
-        <View style={{ alignItems: "flex-start", marginHorizontal: 5 }}>
-          <Text style={styles.username}>{name} & {dogName}</Text> 
-          {pronouns && <Text style={styles.dognouns}>{pronouns} </Text>}
-          <Pressable style={styles.button}>
-            <Text style={styles.buttonText}>Edit Profile</Text>
-          </Pressable>
+        <View style={{ flexDirection: "row", flexWrap: 'nowrap' }}>
+            <Image source={{ uri: image0 }} style={styles.profilePic}></Image>
+                <View style={{ alignItems: "flex-start", marginHorizontal: 5 }}>
+                    <Text style={styles.username}>{dogName}</Text>
+                    <Text>& {name}</Text> 
+                    {pronouns && <Text style={styles.dognouns}>{pronouns} </Text>}
+                    <Pressable style={styles.button}>
+                        <Text style={styles.buttonText}>Edit Profile</Text>
+                    </Pressable>
+                </View>
         </View>
-      </View>
-      <ScrollView horizontal={true}>
+      <ScrollView horizontal={true} >
         {image0 && <Image style={styles.image} source={{ uri: image0 }} />}
         {image1 && <Image style={styles.image} source={{ uri: image1 }} />}
         {image2 && <Image style={styles.image} source={{ uri: image2 }} />}
         {image3 && <Image style={styles.image} source={{ uri: image3 }} />}
         {image4 && <Image style={styles.image} source={{ uri: image4 }} />}
-      </ScrollView>
-      <Text style={styles.infoText}>{bio}</Text>
+    </ScrollView>
+    <Text style={styles.infoText}>{bio}</Text>
+    <ScrollView horizontal = {true} style= {{flexDirection: "row"}}>
+            {tags[0] && <Chips onPress={() => {}} chipTitle="1" />}
+            {tags[1] && <Chips onPress={() => {}} chipTitle="2" />}
+            {tags[2] && <Chips onPress={() => {}} chipTitle="3" />}
+            {tags[3] && <Chips onPress={() => {}} chipTitle="4" />}
+            {tags[4] && <Chips onPress={() => {}} chipTitle="5" />}
+            {tags[5] && <Chips onPress={() => {}} chipTitle="6" />}
+            {tags[6] && <Chips onPress={() => {}} chipTitle="7" />}
+            {tags[7] && <Chips onPress={() => {}} chipTitle="8" />}
+            {tags[8] && <Chips onPress={() => {}} chipTitle="9" />}
+            {tags[9] && <Chips onPress={() => {}} chipTitle="10" />}
+            {tags[10] && <Chips onPress={() => {}} chipTitle="11" />}
+            {tags[11] && <Chips onPress={() => {}} chipTitle="12" />}
+            {tags[12] && <Chips onPress={() => {}} chipTitle="13" />}
+            {tags[13] && <Chips onPress={() => {}} chipTitle="14" />}
+            {tags[14] && <Chips onPress={() => {}} chipTitle="15" />}
+            <Chips onPress={() => {tags[0] = !tags[0]}} chipTitle="{Sample}" />
+              <Chips onPress={() => {tags[1] = !tags[1]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[2] = !tags[2]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[3] = !tags[3]}} chipTitle="Sample" />
+              <Chips onPress={() => {tags[4] = !tags[4]}} chipTitle="Sample" />
+    </ScrollView>
     </View>
   );
 }
