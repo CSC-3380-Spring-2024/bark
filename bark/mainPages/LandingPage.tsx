@@ -17,6 +17,7 @@ export default function LandingPage(props: { setLoginStatus: (arg0: boolean) => 
         if(user){
             const uid = user.uid;
             console.log("User " + user.email + " with uid " + uid + " has logged in");
+            props.setLoginStatus(true);
         }
 
     })
