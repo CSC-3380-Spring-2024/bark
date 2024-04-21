@@ -39,6 +39,7 @@ export default function Onboarding({ navigation }: { navigation: any }) {
   return (
     <>
       <ScrollView style={styles.mainContainer}>
+        <Button onPress={()=>{}} title = "< Back" />
         {/*Get Owner's and Dog's name */}
         <View style={styles.screen}>
           <Text style={styles.text}>Name</Text>
