@@ -1,4 +1,5 @@
 import {View, Text, StyleSheet, Image, ScrollView, SafeAreaView, Button, Alert, TouchableHighlight, Dimensions} from 'react-native'
+import generateProfiles from "../components/generateProfiles";
 
 const dimensions=Dimensions.get('window');
 
@@ -96,6 +97,19 @@ const styles=StyleSheet.create({
 });
 
 const Home=()=>(
+  
+    const profiles: string[] = [];
+    async function generateProf() {
+    await generateProfiles()
+      .then((promise) => {
+        promise.forEach((uid) => {
+          profiles.push(uid);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
     <ScrollView>
     <SafeAreaView>
 

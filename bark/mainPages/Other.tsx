@@ -1,9 +1,11 @@
-import {View, Text} from 'react-native'
+import { View, Text } from "react-native";
 
 export default function Other(){
+
     return(
-        <View>
-            <Text>Other Screen</Text>
-        </View>
-    );
+    <View>
+        <Text>Other Screen</Text>
+    </View>
+);
+
 }
