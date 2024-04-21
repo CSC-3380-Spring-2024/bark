@@ -18,7 +18,8 @@ export default function Onboarding({ navigation }: { navigation: any }) {
   const [name, setName] = useState<string>("");
   const [dogName, setDogName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
-  const tags = new Array(15).fill(false)
+  const [characterCount, setCharacterCount] = useState<number>(0);
+  const tags = new Array(15).fill(false);
 
   const submitScreen = async () => {
     const response = await set(
@@ -49,7 +50,7 @@ export default function Onboarding({ navigation }: { navigation: any }) {
           ></TextInput>
         </View>
         <View style={styles.screen}>
-          <Text style={styles.text}>Then lets get your dog's name</Text>
+          <Text style={styles.text}>Dog name</Text>
           <TextInput
             onChangeText={setDogName}
             value={dogName}
@@ -59,7 +60,7 @@ export default function Onboarding({ navigation }: { navigation: any }) {
         </View>
         {/*Then get pictures */}
         <View style={styles.screen}>
-          <Text style={styles.text}> Next, lets get some pictures.</Text>
+          <Text style={styles.text}>Pictures</Text>
           <ScrollView horizontal={true} style={styles.profileImagesContainer}>
             <ImageUploader index={0} />
             <ImageUploader index={1} />
@@ -70,9 +71,12 @@ export default function Onboarding({ navigation }: { navigation: any }) {
         </View>
         {/*Get profile bio*/}
         <View style={styles.screen}>
-          <Text style={styles.text}>Now, lets get to know about your pup!</Text>
+          <Text style={styles.text}>Bio</Text>
           <TextInput
-            onChangeText={setBio}
+            onChangeText={(text) => {
+              setBio(text);
+              setCharacterCount(text.length);
+            }}
             value={bio}
             placeholder="Bio here..."
             maxLength={240}
@@ -80,6 +84,7 @@ export default function Onboarding({ navigation }: { navigation: any }) {
             scrollEnabled={false}
             style={styles.textInputsBio}
           ></TextInput>
+          <Text style={styles.characterLimitText}>{characterCount} / 240</Text>
         </View>
         {/*Get tags for the profile*/}
         <View style={styles.screen}>
@@ -88,25 +93,100 @@ export default function Onboarding({ navigation }: { navigation: any }) {
             style={{ flexDirection: "row", justifyContent: "space-around" }}
           >
             <View>
-              <Chips onPress={() => {tags[0] = !tags[0]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[1] = !tags[1]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[2] = !tags[2]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[3] = !tags[3]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[4] = !tags[4]}} chipTitle="Sample" />
+              <Chips
+                onPress={() => {
+                  tags[0] = !tags[0];
+                }}
+                chipTitle="Sample"
+              />
+              <Chips
+                onPress={() => {
+                  tags[1] = !tags[1];
+                }}
+                chipTitle="Sample"
+              />
+              <Chips
+                onPress={() => {
+                  tags[2] = !tags[2];
+                }}
+                chipTitle="Sample"
+              />
+              <Chips
+                onPress={() => {
+                  tags[3] = !tags[3];
+                }}
+                chipTitle="Sample"
+              />
+              <Chips
+                onPress={() => {
+                  tags[4] = !tags[4];
+                }}
+                chipTitle="Sample"
+              />
             </View>
             <View>
-              <Chips onPress={() => {tags[5] = !tags[5]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[6] = !tags[6]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[7] = !tags[7]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[8] = !tags[8]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[9] = !tags[9]}} chipTitle="Sample" />
+              <Chips
+                onPress={() => {
+                  tags[5] = !tags[5];
+                }}
+                chipTitle="Sample"
+              />
+              <Chips
+                onPress={() => {
+                  tags[6] = !tags[6];
+                }}
+                chipTitle="Sample"
+              />
+              <Chips
+                onPress={() => {
+                  tags[7] = !tags[7];
+                }}
+                chipTitle="Sample"
+              />
+              <Chips
+                onPress={() => {
+                  tags[8] = !tags[8];
+                }}
+                chipTitle="Sample"
+              />
+              <Chips
+                onPress={() => {
+                  tags[9] = !tags[9];
+                }}
+                chipTitle="Sample"
+              />
             </View>
             <View>
-              <Chips onPress={() => {tags[10] = !tags[10]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[11] = !tags[11]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[12] = !tags[12]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[13] = !tags[13]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[14] = !tags[14]}} chipTitle="Sample" />
+              <Chips
+                onPress={() => {
+                  tags[10] = !tags[10];
+                }}
+                chipTitle="Sample"
+              />
+              <Chips
+                onPress={() => {
+                  tags[11] = !tags[11];
+                }}
+                chipTitle="Sample"
+              />
+              <Chips
+                onPress={() => {
+                  tags[12] = !tags[12];
+                }}
+                chipTitle="Sample"
+              />
+              <Chips
+                onPress={() => {
+                  tags[13] = !tags[13];
+                }}
+                chipTitle="Sample"
+              />
+              <Chips
+                onPress={() => {
+                  tags[14] = !tags[14];
+                }}
+                chipTitle="Sample"
+              />
             </View>
           </View>
         </View>
@@ -128,21 +208,28 @@ const styles = StyleSheet.create({
     marginLeft: 0,
   },
   screen: {
-    marginTop: "65%",
-    marginBottom: "55%",
+    marginBottom: 15,
+    marginLeft: 10,
+    marginRight: 10,
   },
   text: {
-    fontSize: 25,
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  characterLimitText: {
+    fontStyle: "italic",
+    fontSize: 10,
     fontWeight: "bold",
   },
   centered: {},
-  mainContainer: {},
+  mainContainer: {
+    backgroundColor: "#f0eada",
+  },
   textInputs: {
+    borderBottomWidth: 5,
     borderColor: "black",
-    borderWidth: 1,
-    borderRadius: 10,
     height: 60,
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: "bold",
   },
   textInputsBio: {
