@@ -107,7 +107,7 @@ export default function Onboarding(props: {
           <Text style={styles.text}>Dog name</Text>
           <TextInput
             onChangeText={setDogName}
-            //defaultValue={dogName}
+            value={dogName}
             style={styles.textInputs}
             placeholder={'ex: "susie"'}
           ></TextInput>
@@ -115,7 +115,6 @@ export default function Onboarding(props: {
         {/*Then get pictures */}
         <View style={styles.screen}>
           <Text style={styles.text}>Pictures</Text>
-
           <ScrollView horizontal={true} style={styles.profileImagesContainer}>
             <ImageUploader index={0} />
             <ImageUploader index={1} />
@@ -208,6 +207,20 @@ const styles = StyleSheet.create({
     height: 160,
     fontSize: 15,
     padding: 10,
+  },
+  button: {
+    borderColor: "black",
+    borderWidth: 3,
+    borderRadius: 25,
+    height: 50,
+    marginTop: 15,
+  },
+  buttonText: {
+    justifyContent: "center",
+    fontWeight: "bold",
+    alignContent: "center",
+    textAlign: "center",
+    paddingTop: 10,
   },
 });
 
