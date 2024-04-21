@@ -8,21 +8,27 @@ import {
   TextInput,
 } from "react-native";
 
-
-import { FIREBASE_DATABASE, FIREBASE_AUTH, FIREBASE_STORAGE } from "../FirebaseConfig";
+import {
+  FIREBASE_DATABASE,
+  FIREBASE_AUTH,
+  FIREBASE_STORAGE,
+} from "../FirebaseConfig";
 import { set, ref, get } from "@firebase/database";
 import { ImageUploader } from "../components/imageUploader";
 import { Chips } from "../components/Chips";
 import { useState, useMemo } from "react";
 import { ref as storageRef, getDownloadURL, list } from "@firebase/storage";
 
-
-export default function Onboarding({ navigation }: { navigation: any }) {
+export default function Onboarding(props: {
+  editingProf: (arg0: boolean) => void;
+  editProf: boolean;
+}) {
   const [name, setName] = useState<string>("");
   const [dogName, setDogName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [characterCount, setCharacterCount] = useState<number>(0);
   const tags = new Array(15).fill(false);
+  const [onBoarded, onBoard] = useState<boolean>(false);
 
   const submitScreen = async () => {
     const response = await set(
@@ -36,67 +42,63 @@ export default function Onboarding({ navigation }: { navigation: any }) {
       }
     ).then((reply) => {
       console.log(reply);
-      props.editingProf(false)}
-    );
+      props.editingProf(false);
+    });
   };
 
-  const back = () =>{
+  const back = () => {
     props.editingProf(false);
   };
 
-  const updateVals = async () => {
-    const response = await set(
-      ref(FIREBASE_DATABASE, "users/" + FIREBASE_AUTH.currentUser?.uid),
-      {
-        name: name,
-        dogName: dogName,
-        bio: bio,
-        onBoarded: true,
-        tags: tags,
-      }
-    ).then((reply) => {
-      console.log("updated");
-  });
-  }
+  // const updateVals = async () => {
+  //   const response = await set(
+  //     ref(FIREBASE_DATABASE, "users/" + FIREBASE_AUTH.currentUser?.uid),
+  //     {
+  //       name: name,
+  //       dogName: dogName,
+  //       bio: bio,
+  //       onBoarded: true,
+  //       tags: tags,
+  //     }
+  //   ).then((reply) => {
+  //     console.log("updated");
+  // });
+  //}
+
+  //DATABASE REFERENCE
   const userRef = ref(
     FIREBASE_DATABASE,
     `users/${FIREBASE_AUTH.currentUser?.uid}/`
   );
-  // var name1 ="";
-  // var dogName1 = "";
-  // var bio1 = "";
-  get(userRef).then((snapshot) => {
-      
-      // name1 = snapshot.val().name;
-      // dogName1 = snapshot.val().dogName;
-      // bio1 = snapshot.val().bio;
-      // setName(snapshot.val().name);
-      // setDogName(snapshot.val().dogName);
-      // setBio(snapshot.val().bio);
-  });
 
-  const textHandler = (text : string) =>{
-    setName(text);
-    updateVals();
-  }
+  //PULL USER DATA FROM DATABASE
+  get(userRef).then((snapshot) => {
+    if (snapshot.exists()) {
+      // setName(snapshot.val().name);
+      // setBio(snapshot.val().bio);
+      // setPronouns(snapshot.val().pronouns);
+      // setDogName(snapshot.val().dogName);
+      // setTags(useMemo(()=>snapshot.val().tags,[]));
+      onBoard(snapshot.val().onBoarded);
+    } else {
+    }
+  });
 
   return (
     <>
       <ScrollView style={styles.mainContainer}>
-        <Button onPress={()=>{}} title = "< Back" />
+        {/* {props.editProf && <Button onPress={back} title="< Back" />} */}
         {/*Get Owner's and Dog's name */}
-        <Pressable onPress={back} style = {styles.button}>
-            <Text style = {styles.buttonText}> Back </Text>
+        {props.editProf && (
+          <Pressable onPress={back} style={styles.button}>
+            <Text style={styles.buttonText}> {"<"} Back </Text>
           </Pressable>
+        )}
         <View style={styles.screen}>
           <Text style={styles.text}>Name</Text>
           <TextInput
             onChangeText={setName}
-            //onKeyPress={(value)=>textHandler(value.nativeEvent.key)}
-            //onSubmitEditing={(value) => textHandler(value.nativeEvent.text)}
-            //onEndEditing={(value) => textHandler(value.nativeEvent.text)}
             value={name}
-            //defaultValue={name}
             style={styles.textInputs}
             placeholder="Type YOUR name here"
           ></TextInput>
@@ -112,7 +114,6 @@ export default function Onboarding({ navigation }: { navigation: any }) {
         </View>
         {/*Then get pictures */}
         <View style={styles.screen}>
-
           <Text style={styles.text}>Pictures</Text>
 
           <ScrollView horizontal={true} style={styles.profileImagesContainer}>
@@ -132,7 +133,6 @@ export default function Onboarding({ navigation }: { navigation: any }) {
               setCharacterCount(text.length);
             }}
             value={bio}
-
             placeholder="Bio here..."
             maxLength={240}
             multiline={true}
@@ -141,114 +141,10 @@ export default function Onboarding({ navigation }: { navigation: any }) {
           ></TextInput>
           <Text style={styles.characterLimitText}>{characterCount} / 240</Text>
         </View>
-        {/*Get tags for the profile*/}
-        <View style={styles.screen}>
-          <Text style={styles.text}>Now Select all that apply</Text>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-around" }}
-          >
-            <View>
-              <Chips
-                onPress={() => {
-                  tags[0] = !tags[0];
-                }}
-                chipTitle="Sample"
-              />
-              <Chips
-                onPress={() => {
-                  tags[1] = !tags[1];
-                }}
-                chipTitle="Sample"
-              />
-              <Chips
-                onPress={() => {
-                  tags[2] = !tags[2];
-                }}
-                chipTitle="Sample"
-              />
-              <Chips
-                onPress={() => {
-                  tags[3] = !tags[3];
-                }}
-                chipTitle="Sample"
-              />
-              <Chips
-                onPress={() => {
-                  tags[4] = !tags[4];
-                }}
-                chipTitle="Sample"
-              />
-            </View>
-            <View>
-              <Chips
-                onPress={() => {
-                  tags[5] = !tags[5];
-                }}
-                chipTitle="Sample"
-              />
-              <Chips
-                onPress={() => {
-                  tags[6] = !tags[6];
-                }}
-                chipTitle="Sample"
-              />
-              <Chips
-                onPress={() => {
-                  tags[7] = !tags[7];
-                }}
-                chipTitle="Sample"
-              />
-              <Chips
-                onPress={() => {
-                  tags[8] = !tags[8];
-                }}
-                chipTitle="Sample"
-              />
-              <Chips
-                onPress={() => {
-                  tags[9] = !tags[9];
-                }}
-                chipTitle="Sample"
-              />
-            </View>
-            <View>
-              <Chips
-                onPress={() => {
-                  tags[10] = !tags[10];
-                }}
-                chipTitle="Sample"
-              />
-              <Chips
-                onPress={() => {
-                  tags[11] = !tags[11];
-                }}
-                chipTitle="Sample"
-              />
-              <Chips
-                onPress={() => {
-                  tags[12] = !tags[12];
-                }}
-                chipTitle="Sample"
-              />
-              <Chips
-                onPress={() => {
-                  tags[13] = !tags[13];
-                }}
-                chipTitle="Sample"
-              />
-              <Chips
-                onPress={() => {
-                  tags[14] = !tags[14];
-                }}
-                chipTitle="Sample"
-              />
-            </View>
-          </View>
-        </View>
 
-        <View style={{alignSelf:'center', marginBottom:"5%"}}>
-          <Pressable onPress={submitScreen} style = {styles.button}>
-            <Text style = {styles.buttonText}> Finish profile </Text>
+        <View style={{ alignSelf: "center", marginBottom: "5%" }}>
+          <Pressable onPress={submitScreen} style={styles.button}>
+            <Text style={styles.buttonText}> Finish profile </Text>
           </Pressable>
         </View>
       </ScrollView>
@@ -262,23 +158,27 @@ const styles = StyleSheet.create({
     height: 260,
     marginLeft: 0,
   },
-  button:{
-    backgroundColor: 'beige',
-    alignSelf: 'flex-start',
+  button: {
+    // backgroundColor: "",
+    alignSelf: "flex-start",
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    marginHorizontal: "2%",
+    borderWidth: 2.5,
+    borderColor: "sienna",
+    marginHorizontal: "3%",
+    marginVertical: "3%",
   },
-  buttonText:{
-    fontSize:20
+  buttonText: {
+    fontSize: 20,
+    color: "sienna",
+    fontWeight: "bold",
   },
   screen: {
     marginBottom: 15,
     marginLeft: 10,
     marginRight: 10,
-
   },
   text: {
     fontSize: 30,
@@ -288,13 +188,11 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     fontSize: 10,
     fontWeight: "bold",
-    marginBottom: "2%"
+    marginBottom: "2%",
   },
   centered: {},
   mainContainer: {
-
     backgroundColor: "#f0eada",
-
   },
   textInputs: {
     borderBottomWidth: 5,

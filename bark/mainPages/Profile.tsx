@@ -19,89 +19,7 @@ import {
 import { ref, get } from "@firebase/database";
 import { ref as storageRef, getDownloadURL } from "@firebase/storage";
 import Onboarding from "./Onboarding";
-
-const styles = StyleSheet.create({
-    dogName: {
-        fontSize: 35,
-        color: "black",
-        flexWrap: "wrap",
-        marginTop: 5,
-        marginVertical:5
-    },
-    ownerName:{
-        fontSize: 30,
-        color: "black",
-        alignSelf: 'center'
-    },
-    infoText: {
-        fontSize: 20,
-        color: "black",
-        marginVertical:0,
-        marginHorizontal:10,
-    },
-    dognouns: {
-        fontSize: 15,
-        color: "black",
-    },
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    image: {
-        width: 180,
-        height: 240,
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        marginHorizontal: 5,
-  },
-    profilePic: {
-        width: 100,
-        height: 100,
-        borderBottomLeftRadius: 50,
-        borderBottomRightRadius: 50,
-        borderTopLeftRadius: 50,
-        borderTopRightRadius: 50,
-        borderColor: "black",
-        borderWidth: 3,
-        alignSelf: "center",
-        marginVertical: 5,
-        marginHorizontal:5,
-  },
-    button: {
-        borderBlockColor: "black",
-        borderColor: "black",
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        marginRight: 5,
-        marginVertical: 5,
-        //flexDirection:'row-reverse',
-        alignSelf:'flex-end',
-  },
-    buttonText: {
-        fontSize: 20,
-        alignSelf: "center",
-  },
-    line:{
-      fontSize:30,
-      alignSelf:'stretch'
-  },
-    title:{
-      fontSize:20,
-      marginHorizontal:10,
-      marginBottom: 5
-    },
-    gear:{
-      width:35,
-      height:35,
-      backgroundColor:'transparent',
-    }
-});
-
+import Settings from "./Settings";
 
 export default function Profile() {
   //ALL STATE HOOKS
@@ -115,7 +33,23 @@ export default function Profile() {
   const [image2, setImage2] = useState<string>();
   const [image3, setImage3] = useState<string>();
   const [image4, setImage4] = useState<string>();
-  const [tags, setTags] = useState<boolean[]>([false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,]);
+  const [tags, setTags] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
   const [editProf, editingProf] = useState<boolean>(false);
   const [settings, goToSettings] = useState<boolean>(false);
 
@@ -134,7 +68,7 @@ export default function Profile() {
       setBio(snapshot.val().bio);
       setPronouns(snapshot.val().pronouns);
       setDogName(snapshot.val().dogName);
-      setTags(useMemo(()=>snapshot.val().tags, [tags]));
+      setTags(useMemo(() => snapshot.val().tags, []));
     } else {
     }
   });
@@ -179,33 +113,46 @@ export default function Profile() {
       }
     };
 
-
-
     if (image0 == undefined) {
       getImage();
     }
   }, []);
-  return(editProf ? <Onboarding editingProf = {editingProf}/> :
-    <View>
-      <View style={{ flexGrow:1, marginHorizontal:"3%" }}>
-              <View style = {{flexDirection:'row', justifyContent:'space-between'}}> 
-                <Text style={styles.dogName}>{dogName}</Text>
-                <View style={{flexDirection:'row'}}>
-                  <Pressable style={styles.button} onPress={()=>editingProf(true)}>
-                    <Image source={require("../assets/pencil.png")} style={styles.gear}></Image>
-                  </Pressable>
-                  <Pressable style={styles.button} onPress={()=>goToSettings(true)}>
-                    <Image source={require("../assets/gear2.png")} style={styles.gear}></Image>
-                  </Pressable>
-                  
-                </View>
-              </View>
-              
-              {/* {pronouns && <Text style={styles.dognouns}>{pronouns} </Text>} */}
-              <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
-              <View style={{ height: 2, backgroundColor: 'black', marginBottom:10}} />
+  return editProf ? (
+    <Onboarding editingProf={editingProf} editProf={editProf} />
+  ) : settings ? (
+    <Settings goToSettings={goToSettings} />
+  ) : (
+    <ScrollView style={styles.mainContainer} bounces={false}>
+      <View style={{ flexGrow: 1, marginHorizontal: "3%" }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={styles.dogName}>{dogName}</Text>
+          <View style={{ flexDirection: "row" }}>
+            <Pressable style={styles.button} onPress={() => editingProf(true)}>
+              <Image
+                source={require("../assets/pencil.png")}
+                style={styles.gear}
+              ></Image>
+            </Pressable>
+            <Pressable style={styles.button} onPress={() => goToSettings(true)}>
+              <Image
+                source={require("../assets/gear2.png")}
+                style={styles.gear}
+              ></Image>
+            </Pressable>
+          </View>
+        </View>
+
+        {/* {pronouns && <Text style={styles.dognouns}>{pronouns} </Text>} */}
+        <View
+          style={{
+            flex: 1,
+            height: 2,
+            backgroundColor: "black",
+            marginBottom: 10,
+          }}
+        />
       </View>
-      <View style={{flexGrow:1}}>
+      <View style={{ flexGrow: 1 }}>
         <ScrollView horizontal={true}>
           {image0 && <Image style={styles.image} source={{ uri: image0 }} />}
           {image1 && <Image style={styles.image} source={{ uri: image1 }} />}
@@ -214,37 +161,117 @@ export default function Profile() {
           {image4 && <Image style={styles.image} source={{ uri: image4 }} />}
         </ScrollView>
       </View>
-      <View style={{flexGrow:1}}>
-        <View style={{ height: 2, backgroundColor: 'black', marginHorizontal:"3%", marginVertical:5, marginTop:"3%"}} />
+      <View style={{ flexGrow: 1 }}>
+        <View
+          style={{
+            height: 2,
+            backgroundColor: "black",
+            marginHorizontal: "3%",
+            marginVertical: 5,
+            marginTop: "3%",
+          }}
+        />
         <Text style={styles.title}>Bio:</Text>
-        
+
         <Text style={styles.infoText}>{bio}</Text>
-        <View style={{ height: 2, backgroundColor: 'black', marginHorizontal:"3%", marginVertical:5, marginBottom:"3%"}} />
-        <Text style={styles.title}>Tags:</Text>
-        <ScrollView horizontal = {true} style= {{flexDirection: "row"}}>
-                {/* {tags[0] && <Chips onPress={() => {}} chipTitle="1" />}
-                {tags[1] && <Chips onPress={() => {}} chipTitle="2" />}
-                {tags[2] && <Chips onPress={() => {}} chipTitle="3" />}
-                {tags[3] && <Chips onPress={() => {}} chipTitle="4" />}
-                {tags[4] && <Chips onPress={() => {}} chipTitle="5" />}
-                {tags[5] && <Chips onPress={() => {}} chipTitle="6" />}
-                {tags[6] && <Chips onPress={() => {}} chipTitle="7" />}
-                {tags[7] && <Chips onPress={() => {}} chipTitle="8" />}
-                {tags[8] && <Chips onPress={() => {}} chipTitle="9" />}
-                {tags[9] && <Chips onPress={() => {}} chipTitle="10" />}
-                {tags[10] && <Chips onPress={() => {}} chipTitle="11" />}
-                {tags[11] && <Chips onPress={() => {}} chipTitle="12" />}
-                {tags[12] && <Chips onPress={() => {}} chipTitle="13" />}
-                {tags[13] && <Chips onPress={() => {}} chipTitle="14" />}
-                {tags[14] && <Chips onPress={() => {}} chipTitle="15" />} */}
-                <Chips onPress={() => {tags[0] = !tags[0]}} chipTitle="Buttons" />
-                <Chips onPress={() => {tags[1] = !tags[1]}} chipTitle="Saying" />
-                <Chips onPress={() => {tags[2] = !tags[2]}} chipTitle="Stuff" />
-                <Chips onPress={() => {tags[3] = !tags[3]}} chipTitle="About" />
-                <Chips onPress={() => {tags[4] = !tags[4]}} chipTitle="Dog" />
-        </ScrollView>
-        <Text style={styles.ownerName}>{name}</Text> 
+        <View
+          style={{
+            height: 2,
+            backgroundColor: "black",
+            marginHorizontal: "3%",
+            marginVertical: 0,
+            marginBottom: "3%",
+          }}
+        />
+        <Text style={styles.ownerName}>{name}</Text>
       </View>
-    </View>
+    </ScrollView>
   );
 }
+const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: "#f0eada",
+  },
+  dogName: {
+    fontSize: 35,
+    color: "black",
+    flexWrap: "wrap",
+    marginTop: 5,
+    marginVertical: 5,
+    fontWeight: "bold",
+  },
+  ownerName: {
+    fontSize: 35,
+    color: "black",
+    alignSelf: "center",
+    fontWeight: "bold",
+  },
+  infoText: {
+    fontSize: 20,
+    color: "black",
+    marginVertical: 0,
+    marginHorizontal: 10,
+  },
+  dognouns: {
+    fontSize: 15,
+    color: "black",
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: 225,
+    height: 300,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    marginHorizontal: 5,
+  },
+  profilePic: {
+    width: 100,
+    height: 100,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    borderColor: "black",
+    borderWidth: 3,
+    alignSelf: "center",
+    marginVertical: 5,
+    marginHorizontal: 5,
+  },
+  button: {
+    borderBlockColor: "black",
+    borderColor: "black",
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    marginRight: 5,
+    marginVertical: 5,
+    //flexDirection:'row-reverse',
+    alignSelf: "flex-end",
+  },
+  buttonText: {
+    fontSize: 20,
+    alignSelf: "center",
+  },
+  line: {
+    fontSize: 30,
+    alignSelf: "stretch",
+  },
+  title: {
+    fontSize: 20,
+    marginHorizontal: 10,
+    marginBottom: 5,
+    fontWeight: "bold",
+  },
+  gear: {
+    width: 35,
+    height: 35,
+    backgroundColor: "transparent",
+  },
+});
