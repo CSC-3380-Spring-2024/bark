@@ -208,20 +208,20 @@ const styles = StyleSheet.create({
     fontSize: 15,
     padding: 10,
   },
-  button: {
-    borderColor: "black",
-    borderWidth: 3,
-    borderRadius: 25,
-    height: 50,
-    marginTop: 15,
-  },
-  buttonText: {
-    justifyContent: "center",
-    fontWeight: "bold",
-    alignContent: "center",
-    textAlign: "center",
-    paddingTop: 10,
-  },
+  // button: {
+  //   borderColor: "black",
+  //   borderWidth: 3,
+  //   borderRadius: 25,
+  //   height: 50,
+  //   marginTop: 15,
+  // },
+  // buttonText: {
+  //   justifyContent: "center",
+  //   fontWeight: "bold",
+  //   alignContent: "center",
+  //   textAlign: "center",
+  //   paddingTop: 10,
+  // },
 });
 
 ///////////////////////////ALL CODE BELOW HERE APPEARS ON PROFILE.TSX IF THE USER HAS NOT SET UP THEIR PROFILE////////////////
