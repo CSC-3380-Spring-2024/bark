@@ -18,20 +18,25 @@ import {
 } from "../FirebaseConfig";
 import { ref, get } from "@firebase/database";
 import { ref as storageRef, getDownloadURL } from "@firebase/storage";
+import Onboarding from "./Onboarding";
 
 const styles = StyleSheet.create({
-    username: {
+    dogName: {
         fontSize: 35,
         color: "black",
         flexWrap: "wrap",
         marginTop: 5,
         marginVertical:5
     },
+    ownerName:{
+        fontSize: 30,
+        color: "black",
+        alignSelf: 'center'
+    },
     infoText: {
         fontSize: 20,
         color: "black",
         marginVertical:0,
-        alignSelf: "center",
         marginHorizontal:10,
     },
     dognouns: {
@@ -44,8 +49,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     image: {
-        width: 195,
-        height: 260,
+        width: 180,
+        height: 240,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
         borderTopLeftRadius: 10,
@@ -68,7 +73,6 @@ const styles = StyleSheet.create({
     button: {
         borderBlockColor: "black",
         borderColor: "black",
-        backgroundColor: "gainsboro",
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
         borderTopLeftRadius: 10,
@@ -76,7 +80,7 @@ const styles = StyleSheet.create({
         marginRight: 5,
         marginVertical: 5,
         //flexDirection:'row-reverse',
-        alignSelf:'flex-end'
+        alignSelf:'flex-end',
   },
     buttonText: {
         fontSize: 20,
@@ -87,20 +91,17 @@ const styles = StyleSheet.create({
       alignSelf:'stretch'
   },
     title:{
-      fontSize:25,
+      fontSize:20,
       marginHorizontal:10,
-      marginBottom: 10
+      marginBottom: 5
+    },
+    gear:{
+      width:35,
+      height:35,
+      backgroundColor:'transparent',
     }
 });
 
-// type userProps = {
-//   username: string;
-//   dognouns: string;
-//   loggedin: boolean;
-//   bio: string;
-//   dogNames: string;
-//   humanName: string;
-// };
 
 export default function Profile() {
   //ALL STATE HOOKS
@@ -115,6 +116,8 @@ export default function Profile() {
   const [image3, setImage3] = useState<string>();
   const [image4, setImage4] = useState<string>();
   const [tags, setTags] = useState<boolean[]>([false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,]);
+  const [editProf, editingProf] = useState<boolean>(false);
+  const [settings, goToSettings] = useState<boolean>(false);
 
   const images = new Array(5).fill("");
 
@@ -182,17 +185,22 @@ export default function Profile() {
       getImage();
     }
   }, []);
-  return (
+  return(editProf ? <Onboarding editingProf = {editingProf}/> :
     <View>
-      <View style={{ flexGrow:1, marginHorizontal:15 }}>
+      <View style={{ flexGrow:1, marginHorizontal:"3%" }}>
               <View style = {{flexDirection:'row', justifyContent:'space-between'}}> 
-                <Text style={styles.username}>{dogName}</Text>
-                <Pressable style={styles.button}>
-                  <Text style={styles.buttonText}>Edit Profile</Text>
-                </Pressable>
+                <Text style={styles.dogName}>{dogName}</Text>
+                <View style={{flexDirection:'row'}}>
+                  <Pressable style={styles.button} onPress={()=>editingProf(true)}>
+                    <Image source={require("../assets/pencil.png")} style={styles.gear}></Image>
+                  </Pressable>
+                  <Pressable style={styles.button} onPress={()=>goToSettings(true)}>
+                    <Image source={require("../assets/gear2.png")} style={styles.gear}></Image>
+                  </Pressable>
+                  
+                </View>
               </View>
               
-              {/* <Text>& {name}</Text>  */}
               {/* {pronouns && <Text style={styles.dognouns}>{pronouns} </Text>} */}
               <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
               <View style={{ height: 2, backgroundColor: 'black', marginBottom:10}} />
@@ -207,11 +215,11 @@ export default function Profile() {
         </ScrollView>
       </View>
       <View style={{flexGrow:1}}>
-        <View style={{ height: 2, backgroundColor: 'black', marginHorizontal:15, marginVertical:5, marginTop:15}} />
+        <View style={{ height: 2, backgroundColor: 'black', marginHorizontal:"3%", marginVertical:5, marginTop:"3%"}} />
         <Text style={styles.title}>Bio:</Text>
         
         <Text style={styles.infoText}>{bio}</Text>
-        <View style={{ height: 2, backgroundColor: 'black', marginHorizontal:15, marginVertical:5, marginBottom:15}} />
+        <View style={{ height: 2, backgroundColor: 'black', marginHorizontal:"3%", marginVertical:5, marginBottom:"3%"}} />
         <Text style={styles.title}>Tags:</Text>
         <ScrollView horizontal = {true} style= {{flexDirection: "row"}}>
                 {/* {tags[0] && <Chips onPress={() => {}} chipTitle="1" />}
@@ -235,6 +243,7 @@ export default function Profile() {
                 <Chips onPress={() => {tags[3] = !tags[3]}} chipTitle="About" />
                 <Chips onPress={() => {tags[4] = !tags[4]}} chipTitle="Dog" />
         </ScrollView>
+        <Text style={styles.ownerName}>{name}</Text> 
       </View>
     </View>
   );

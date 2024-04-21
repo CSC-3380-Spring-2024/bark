@@ -8,11 +8,14 @@ import {
   TextInput,
 } from "react-native";
 
-import { FIREBASE_DATABASE, FIREBASE_AUTH } from "../FirebaseConfig";
-import { set, ref } from "@firebase/database";
+
+import { FIREBASE_DATABASE, FIREBASE_AUTH, FIREBASE_STORAGE } from "../FirebaseConfig";
+import { set, ref, get } from "@firebase/database";
 import { ImageUploader } from "../components/imageUploader";
 import { Chips } from "../components/Chips";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { ref as storageRef, getDownloadURL, list } from "@firebase/storage";
+
 
 export default function Onboarding({ navigation }: { navigation: any }) {
   const [name, setName] = useState<string>("");
@@ -33,19 +36,67 @@ export default function Onboarding({ navigation }: { navigation: any }) {
       }
     ).then((reply) => {
       console.log(reply);
-    });
+      props.editingProf(false)}
+    );
   };
+
+  const back = () =>{
+    props.editingProf(false);
+  };
+
+  const updateVals = async () => {
+    const response = await set(
+      ref(FIREBASE_DATABASE, "users/" + FIREBASE_AUTH.currentUser?.uid),
+      {
+        name: name,
+        dogName: dogName,
+        bio: bio,
+        onBoarded: true,
+        tags: tags,
+      }
+    ).then((reply) => {
+      console.log("updated");
+  });
+  }
+  const userRef = ref(
+    FIREBASE_DATABASE,
+    `users/${FIREBASE_AUTH.currentUser?.uid}/`
+  );
+  // var name1 ="";
+  // var dogName1 = "";
+  // var bio1 = "";
+  get(userRef).then((snapshot) => {
+      
+      // name1 = snapshot.val().name;
+      // dogName1 = snapshot.val().dogName;
+      // bio1 = snapshot.val().bio;
+      // setName(snapshot.val().name);
+      // setDogName(snapshot.val().dogName);
+      // setBio(snapshot.val().bio);
+  });
+
+  const textHandler = (text : string) =>{
+    setName(text);
+    updateVals();
+  }
 
   return (
     <>
       <ScrollView style={styles.mainContainer}>
         <Button onPress={()=>{}} title = "< Back" />
         {/*Get Owner's and Dog's name */}
+        <Pressable onPress={back} style = {styles.button}>
+            <Text style = {styles.buttonText}> Back </Text>
+          </Pressable>
         <View style={styles.screen}>
           <Text style={styles.text}>Name</Text>
           <TextInput
             onChangeText={setName}
+            //onKeyPress={(value)=>textHandler(value.nativeEvent.key)}
+            //onSubmitEditing={(value) => textHandler(value.nativeEvent.text)}
+            //onEndEditing={(value) => textHandler(value.nativeEvent.text)}
             value={name}
+            //defaultValue={name}
             style={styles.textInputs}
             placeholder="Type YOUR name here"
           ></TextInput>
@@ -54,14 +105,16 @@ export default function Onboarding({ navigation }: { navigation: any }) {
           <Text style={styles.text}>Dog name</Text>
           <TextInput
             onChangeText={setDogName}
-            value={dogName}
+            //defaultValue={dogName}
             style={styles.textInputs}
             placeholder={'ex: "susie"'}
           ></TextInput>
         </View>
         {/*Then get pictures */}
         <View style={styles.screen}>
+
           <Text style={styles.text}>Pictures</Text>
+
           <ScrollView horizontal={true} style={styles.profileImagesContainer}>
             <ImageUploader index={0} />
             <ImageUploader index={1} />
@@ -79,6 +132,7 @@ export default function Onboarding({ navigation }: { navigation: any }) {
               setCharacterCount(text.length);
             }}
             value={bio}
+
             placeholder="Bio here..."
             maxLength={240}
             multiline={true}
@@ -192,9 +246,9 @@ export default function Onboarding({ navigation }: { navigation: any }) {
           </View>
         </View>
 
-        <View style={styles.screen}>
-          <Pressable onPress={submitScreen}>
-            <Text>Finish profile</Text>
+        <View style={{alignSelf:'center', marginBottom:"5%"}}>
+          <Pressable onPress={submitScreen} style = {styles.button}>
+            <Text style = {styles.buttonText}> Finish profile </Text>
           </Pressable>
         </View>
       </ScrollView>
@@ -208,10 +262,23 @@ const styles = StyleSheet.create({
     height: 260,
     marginLeft: 0,
   },
+  button:{
+    backgroundColor: 'beige',
+    alignSelf: 'flex-start',
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    marginHorizontal: "2%",
+  },
+  buttonText:{
+    fontSize:20
+  },
   screen: {
     marginBottom: 15,
     marginLeft: 10,
     marginRight: 10,
+
   },
   text: {
     fontSize: 30,
@@ -221,10 +288,13 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     fontSize: 10,
     fontWeight: "bold",
+    marginBottom: "2%"
   },
   centered: {},
   mainContainer: {
+
     backgroundColor: "#f0eada",
+
   },
   textInputs: {
     borderBottomWidth: 5,
