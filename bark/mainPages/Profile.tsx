@@ -33,23 +33,6 @@ export default function Profile() {
   const [image2, setImage2] = useState<string>();
   const [image3, setImage3] = useState<string>();
   const [image4, setImage4] = useState<string>();
-  const [tags, setTags] = useState<boolean[]>([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
   const [editProf, editingProf] = useState<boolean>(false);
   const [settings, goToSettings] = useState<boolean>(false);
 
@@ -62,16 +45,18 @@ export default function Profile() {
   );
 
   //PULL USER DATA FROM DATABASE
-  get(userRef).then((snapshot) => {
-    if (snapshot.exists()) {
-      setName(snapshot.val().name);
-      setBio(snapshot.val().bio);
-      setPronouns(snapshot.val().pronouns);
-      setDogName(snapshot.val().dogName);
-      setTags(useMemo(() => snapshot.val().tags, []));
-    } else {
-    }
-  });
+  get(userRef)
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        setName(snapshot.val().name);
+        setBio(snapshot.val().bio);
+        setPronouns(snapshot.val().pronouns);
+        setDogName(snapshot.val().dogName);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
   function setRightImage(uri: string, index: number) {
     switch (index) {
@@ -131,7 +116,11 @@ export default function Profile() {
     <ScrollView style={styles.mainContainer} bounces={false}>
       <View style={{ flexGrow: 1, marginHorizontal: "3%" }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={styles.dogName}>{dogName}</Text>
+          <Text style={styles.dogName}>
+            {dogName}
+            <Text style={styles.ownerName}> with {name}</Text>
+          </Text>
+
           <View style={{ flexDirection: "row" }}>
             <Pressable style={styles.button} onPress={() => editingProf(true)}>
               <Image
@@ -189,7 +178,6 @@ export default function Profile() {
             marginBottom: "3%",
           }}
         />
-        <Text style={styles.ownerName}>{name}</Text>
       </View>
     </ScrollView>
   );
@@ -207,8 +195,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   ownerName: {
-    fontSize: 35,
-    color: "black",
+    fontSize: 20,
+    color: "#808080",
     alignSelf: "center",
     fontWeight: "bold",
   },
