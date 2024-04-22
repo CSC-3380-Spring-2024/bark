@@ -8,17 +8,28 @@ import {
   TextInput,
 } from "react-native";
 
-import { FIREBASE_DATABASE, FIREBASE_AUTH } from "../FirebaseConfig";
-import { set, ref } from "@firebase/database";
+import {
+  FIREBASE_DATABASE,
+  FIREBASE_AUTH,
+  FIREBASE_STORAGE,
+} from "../FirebaseConfig";
+import { set, ref, get } from "@firebase/database";
 import { ImageUploader } from "../components/imageUploader";
 import { Chips } from "../components/Chips";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { ref as storageRef, getDownloadURL, list } from "@firebase/storage";
 
-export default function Onboarding({ navigation }: { navigation: any }) {
-  const [name, setName] = useState<string>("");
-  const [dogName, setDogName] = useState<string>("");
-  const [bio, setBio] = useState<string>("");
-  const tags = new Array(15).fill(false)
+export default function Onboarding(props: {
+  editingProf: (arg0: boolean) => void;
+  editProf: boolean;
+  nameProp: string;
+  dogNameProp: string;
+  bioProp: string;
+}) {
+  const [name, setName] = useState<string>(props.nameProp);
+  const [dogName, setDogName] = useState<string>(props.dogNameProp);
+  const [bio, setBio] = useState<string>(props.bioProp);
+  const [characterCount, setCharacterCount] = useState<number>(0);
 
   const submitScreen = async () => {
     const response = await set(
@@ -28,38 +39,48 @@ export default function Onboarding({ navigation }: { navigation: any }) {
         dogName: dogName,
         bio: bio,
         onBoarded: true,
-        tags: tags,
       }
     ).then((reply) => {
       console.log(reply);
+      props.editingProf(false);
     });
+  };
+
+  const back = () => {
+    props.editingProf(false);
   };
 
   return (
     <>
       <ScrollView style={styles.mainContainer}>
+        {/* Back button only appears if in edit settings mode not setting up account */}
+        {props.editProf && (
+          <Pressable onPress={back} style={styles.button}>
+            <Text style={styles.buttonText}> {"<"} Back </Text>
+          </Pressable>
+        )}
         {/*Get Owner's and Dog's name */}
         <View style={styles.screen}>
           <Text style={styles.text}>Name</Text>
           <TextInput
             onChangeText={setName}
-            value={name}
+            defaultValue={props.nameProp}
             style={styles.textInputs}
             placeholder="Type YOUR name here"
           ></TextInput>
         </View>
         <View style={styles.screen}>
-          <Text style={styles.text}>Then lets get your dog's name</Text>
+          <Text style={styles.text}>Dog name</Text>
           <TextInput
             onChangeText={setDogName}
-            value={dogName}
+            defaultValue={props.dogNameProp}
             style={styles.textInputs}
             placeholder={'ex: "susie"'}
           ></TextInput>
         </View>
         {/*Then get pictures */}
         <View style={styles.screen}>
-          <Text style={styles.text}> Next, lets get some pictures.</Text>
+          <Text style={styles.text}>Pictures</Text>
           <ScrollView horizontal={true} style={styles.profileImagesContainer}>
             <ImageUploader index={0} />
             <ImageUploader index={1} />
@@ -70,50 +91,25 @@ export default function Onboarding({ navigation }: { navigation: any }) {
         </View>
         {/*Get profile bio*/}
         <View style={styles.screen}>
-          <Text style={styles.text}>Now, lets get to know about your pup!</Text>
+          <Text style={styles.text}>Bio</Text>
           <TextInput
-            onChangeText={setBio}
-            value={bio}
+            onChangeText={(text) => {
+              setBio(text);
+              setCharacterCount(text.length);
+            }}
+            defaultValue={props.bioProp}
             placeholder="Bio here..."
             maxLength={240}
             multiline={true}
             scrollEnabled={false}
             style={styles.textInputsBio}
           ></TextInput>
-        </View>
-        {/*Get tags for the profile*/}
-        <View style={styles.screen}>
-          <Text style={styles.text}>Now Select all that apply</Text>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-around" }}
-          >
-            <View>
-              <Chips onPress={() => {tags[0] = !tags[0]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[1] = !tags[1]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[2] = !tags[2]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[3] = !tags[3]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[4] = !tags[4]}} chipTitle="Sample" />
-            </View>
-            <View>
-              <Chips onPress={() => {tags[5] = !tags[5]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[6] = !tags[6]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[7] = !tags[7]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[8] = !tags[8]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[9] = !tags[9]}} chipTitle="Sample" />
-            </View>
-            <View>
-              <Chips onPress={() => {tags[10] = !tags[10]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[11] = !tags[11]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[12] = !tags[12]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[13] = !tags[13]}} chipTitle="Sample" />
-              <Chips onPress={() => {tags[14] = !tags[14]}} chipTitle="Sample" />
-            </View>
-          </View>
+          <Text style={styles.characterLimitText}>{characterCount} / 240</Text>
         </View>
 
-        <View style={styles.screen}>
-          <Pressable onPress={submitScreen}>
-            <Text>Finish profile</Text>
+        <View style={{ alignSelf: "center", marginBottom: "5%" }}>
+          <Pressable onPress={submitScreen} style={styles.button}>
+            <Text style={styles.buttonText}> Finish profile </Text>
           </Pressable>
         </View>
       </ScrollView>
@@ -127,23 +123,47 @@ const styles = StyleSheet.create({
     height: 260,
     marginLeft: 0,
   },
+  button: {
+    // backgroundColor: "",
+    alignSelf: "flex-start",
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderWidth: 2.5,
+    borderColor: "sienna",
+    marginHorizontal: "3%",
+    marginVertical: "3%",
+  },
+  buttonText: {
+    fontSize: 20,
+    color: "sienna",
+    fontWeight: "bold",
+  },
   screen: {
-    marginTop: "65%",
-    marginBottom: "55%",
+    marginBottom: 15,
+    marginLeft: 10,
+    marginRight: 10,
   },
   text: {
-    fontSize: 25,
-    fontWeight: "bold",
-  },
-  centered: {},
-  mainContainer: {},
-  textInputs: {
-    borderColor: "black",
-    borderWidth: 1,
-    borderRadius: 10,
-    height: 60,
     fontSize: 30,
     fontWeight: "bold",
+  },
+  characterLimitText: {
+    fontStyle: "italic",
+    fontSize: 10,
+    fontWeight: "bold",
+    marginBottom: "2%",
+  },
+  centered: {},
+  mainContainer: {
+    backgroundColor: "#f0eada",
+  },
+  textInputs: {
+    borderBottomWidth: 4,
+    borderColor: "black",
+    height: 60,
+    fontSize: 20,
   },
   textInputsBio: {
     borderColor: "black",
