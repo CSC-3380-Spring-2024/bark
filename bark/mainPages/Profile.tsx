@@ -118,7 +118,13 @@ export default function Profile() {
     }
   }, []);
   return editProf ? (
-    <Onboarding editingProf={editingProf} editProf={editProf} />
+    <Onboarding
+      editingProf={editingProf}
+      editProf={editProf}
+      nameProp={name}
+      dogNameProp={dogName}
+      bioProp={bio}
+    />
   ) : settings ? (
     <Settings goToSettings={goToSettings} />
   ) : (

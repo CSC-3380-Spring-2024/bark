@@ -22,13 +22,14 @@ import { ref as storageRef, getDownloadURL, list } from "@firebase/storage";
 export default function Onboarding(props: {
   editingProf: (arg0: boolean) => void;
   editProf: boolean;
+  nameProp: string;
+  dogNameProp: string;
+  bioProp: string;
 }) {
-  const [name, setName] = useState<string>("");
-  const [dogName, setDogName] = useState<string>("");
-  const [bio, setBio] = useState<string>("");
+  const [name, setName] = useState<string>(props.nameProp);
+  const [dogName, setDogName] = useState<string>(props.dogNameProp);
+  const [bio, setBio] = useState<string>(props.bioProp);
   const [characterCount, setCharacterCount] = useState<number>(0);
-  const tags = new Array(15).fill(false);
-  const [onBoarded, onBoard] = useState<boolean>(false);
 
   const submitScreen = async () => {
     const response = await set(
@@ -38,7 +39,6 @@ export default function Onboarding(props: {
         dogName: dogName,
         bio: bio,
         onBoarded: true,
-        tags: tags,
       }
     ).then((reply) => {
       console.log(reply);
@@ -50,55 +50,21 @@ export default function Onboarding(props: {
     props.editingProf(false);
   };
 
-  // const updateVals = async () => {
-  //   const response = await set(
-  //     ref(FIREBASE_DATABASE, "users/" + FIREBASE_AUTH.currentUser?.uid),
-  //     {
-  //       name: name,
-  //       dogName: dogName,
-  //       bio: bio,
-  //       onBoarded: true,
-  //       tags: tags,
-  //     }
-  //   ).then((reply) => {
-  //     console.log("updated");
-  // });
-  //}
-
-  //DATABASE REFERENCE
-  const userRef = ref(
-    FIREBASE_DATABASE,
-    `users/${FIREBASE_AUTH.currentUser?.uid}/`
-  );
-
-  //PULL USER DATA FROM DATABASE
-  get(userRef).then((snapshot) => {
-    if (snapshot.exists()) {
-      // setName(snapshot.val().name);
-      // setBio(snapshot.val().bio);
-      // setPronouns(snapshot.val().pronouns);
-      // setDogName(snapshot.val().dogName);
-      // setTags(useMemo(()=>snapshot.val().tags,[]));
-      onBoard(snapshot.val().onBoarded);
-    } else {
-    }
-  });
-
   return (
     <>
       <ScrollView style={styles.mainContainer}>
-        {/* {props.editProf && <Button onPress={back} title="< Back" />} */}
-        {/*Get Owner's and Dog's name */}
+        {/* Back button only appears if in edit settings mode not setting up account */}
         {props.editProf && (
           <Pressable onPress={back} style={styles.button}>
             <Text style={styles.buttonText}> {"<"} Back </Text>
           </Pressable>
         )}
+        {/*Get Owner's and Dog's name */}
         <View style={styles.screen}>
           <Text style={styles.text}>Name</Text>
           <TextInput
             onChangeText={setName}
-            value={name}
+            defaultValue={props.nameProp}
             style={styles.textInputs}
             placeholder="Type YOUR name here"
           ></TextInput>
@@ -107,7 +73,7 @@ export default function Onboarding(props: {
           <Text style={styles.text}>Dog name</Text>
           <TextInput
             onChangeText={setDogName}
-            value={dogName}
+            defaultValue={props.dogNameProp}
             style={styles.textInputs}
             placeholder={'ex: "susie"'}
           ></TextInput>
@@ -131,7 +97,7 @@ export default function Onboarding(props: {
               setBio(text);
               setCharacterCount(text.length);
             }}
-            value={bio}
+            defaultValue={props.bioProp}
             placeholder="Bio here..."
             maxLength={240}
             multiline={true}
@@ -208,20 +174,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     padding: 10,
   },
-  // button: {
-  //   borderColor: "black",
-  //   borderWidth: 3,
-  //   borderRadius: 25,
-  //   height: 50,
-  //   marginTop: 15,
-  // },
-  // buttonText: {
-  //   justifyContent: "center",
-  //   fontWeight: "bold",
-  //   alignContent: "center",
-  //   textAlign: "center",
-  //   paddingTop: 10,
-  // },
 });
 
 ///////////////////////////ALL CODE BELOW HERE APPEARS ON PROFILE.TSX IF THE USER HAS NOT SET UP THEIR PROFILE////////////////
