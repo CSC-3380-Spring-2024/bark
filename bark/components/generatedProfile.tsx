@@ -21,7 +21,15 @@ import {
 } from "../FirebaseConfig";
 const dimensions = Dimensions.get("window");
 
-export default function GeneratedProf({ uuid }: { uuid: string }) {
+export default function GeneratedProf({
+  uuid,
+  accept,
+  deny,
+}: {
+  uuid: string;
+  accept: Function;
+  deny: Function;
+}) {
   const [name, setName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [dogName, setDogName] = useState<string>("");
@@ -32,6 +40,7 @@ export default function GeneratedProf({ uuid }: { uuid: string }) {
   const [image4, setImage4] = useState<string>();
 
   const userRef = databaseRef(FIREBASE_DATABASE, `users/${uuid}/`);
+
   databaseGet(userRef)
     .then((snapshot) => {
       if (snapshot.exists()) {
@@ -81,13 +90,13 @@ export default function GeneratedProf({ uuid }: { uuid: string }) {
             setRightImage(response, i);
             console.log(response);
           })
-          .catch((response) => {});
+          .catch((error) => {
+            setRightImage("", i);
+          });
       }
     };
-    if (image0 == undefined) {
-      getImage();
-    }
-  }, []);
+    getImage();
+  }, [uuid]);
 
   return (
     <ScrollView>
@@ -128,19 +137,23 @@ export default function GeneratedProf({ uuid }: { uuid: string }) {
 
           <View style={styles.viewContainer}>
             <TouchableHighlight
-              onPress={() => Alert.alert("ayyyy")}
-              underlayColor="transparent"
-            >
-              <View style={styles.view}>
-                <Text style={styles.buttonText}>Yes!</Text>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={() => Alert.alert("awwww")}
+              onPress={() => {
+                deny();
+              }}
               underlayColor="transparent"
             >
               <View style={styles.view2}>
-                <Text style={styles.buttonText}>Pass...</Text>
+                <Text style={styles.buttonText}>Pass</Text>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={() => {
+                accept();
+              }}
+              underlayColor="transparent"
+            >
+              <View style={styles.view}>
+                <Text style={styles.buttonText}>Match!</Text>
               </View>
             </TouchableHighlight>
           </View>
@@ -154,18 +167,11 @@ export default function GeneratedProf({ uuid }: { uuid: string }) {
                 marginVertical: 7,
               }}
             >
-              Dog Name
+              {name}
             </Text>
           </View>
           <Text style={styles.headings}>Bio:</Text>
-          <Text style={styles.dogBio}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod
-            quaerat molestias quae enim aut ipsa expedita rem aspernatur quidem
-            autem ad fugit labore, vitae, blanditiis inventore cupiditate eos.
-            Eum, qui excepturi. Sapiente explicabo vitae deleniti alias
-            quisquam, est, perspiciatis eum necessitatibus, asperiores voluptate
-            hic! Aut dolor iusto tempora voluptatibus dignissimos.
-          </Text>
+          <Text style={styles.dogBio}>{bio}</Text>
           <View style={styles.container}></View>
         </View>
       </SafeAreaView>
@@ -256,7 +262,7 @@ const styles = StyleSheet.create({
   },
 
   username: {
-    fontSize: 14,
+    fontSize: 30,
     color: "black",
     marginTop: 12,
     fontWeight: "bold",
