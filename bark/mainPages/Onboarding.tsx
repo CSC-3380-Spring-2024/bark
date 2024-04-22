@@ -160,11 +160,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#f0eada",
   },
   textInputs: {
-    borderBottomWidth: 5,
+    borderBottomWidth: 4,
     borderColor: "black",
     height: 60,
-    fontSize: 25,
-    fontWeight: "bold",
+    fontSize: 20,
   },
   textInputsBio: {
     borderColor: "black",
