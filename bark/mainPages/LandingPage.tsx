@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -147,7 +147,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginBottom: 20,
     width: "90%",
-    //color: "C07A5D",
   },
   buttonContainer: {
     width: "60%",
@@ -169,6 +168,7 @@ const styles = StyleSheet.create({
   textFields: {
     borderWidth: 3,
     borderColor: "#C07A5D",
+
     borderRadius: 5,
     height: 50,
     marginBottom: 10,
