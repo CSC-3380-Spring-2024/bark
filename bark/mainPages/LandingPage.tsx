@@ -7,6 +7,7 @@ import {
   View,
   Image,
   Text,
+  ScrollView,
 } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
 import {
@@ -17,6 +18,9 @@ import {
 } from "@firebase/auth";
 import { ref, set } from "@firebase/database";
 import { StyleSheet } from "react-native";
+
+import DogLogo from "../assets/logo.png";
+//import { ScrollView } from "react-native-gesture-handler";
 
 export default function LandingPage(props: {
   setLoginStatus: (arg0: boolean) => void;
@@ -31,8 +35,6 @@ export default function LandingPage(props: {
       const uid = user.uid;
       console.log("User " + user.email + " with uid " + uid + " has logged in");
       props.setLoginStatus(true);
-    } else {
-      props.setLoginStatus(false);
     }
   });
 
@@ -41,6 +43,7 @@ export default function LandingPage(props: {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
       console.log(response);
+      props.setLoginStatus(true);
     } catch (error) {
       console.log(error);
     } finally {
@@ -71,51 +74,53 @@ export default function LandingPage(props: {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topSection}>
-        <Image source={require("../assets/logo.png")} style={styles.dogLogo} />
-        <Text style={styles.barkText}>BARK.</Text>
-      </View>
-      <View style={styles.bottomSection}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.textFields}
-            value={email}
-            placeholder="Email"
-            autoCapitalize="none"
-            onChangeText={(text) => setEmail(text)}
-          />
+    <ScrollView style={{ backgroundColor: "#EADDCA" }} bounces={false}>
+      <View style={styles.container}>
+        <View style={styles.topSection}>
+          <Image source={DogLogo} style={styles.dogLogo} />
+          <Text style={styles.barkText}>BARK.</Text>
         </View>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.textFields}
-            secureTextEntry={true}
-            value={password}
-            placeholder="Password"
-            autoCapitalize="none"
-            onChangeText={(text) => setPassword(text)}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <View style={styles.loginButtonWrapper}>
-            <Button title="Login" onPress={() => signIn()} color="white" />
-          </View>
-          <View style={styles.createAccountButtonWrapper}>
-            <Button
-              title="Create Account"
-              onPress={() => signUp()}
-              color="brown"
+        <View style={styles.bottomSection}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.textFields}
+              value={email}
+              placeholder="Email"
+              autoCapitalize="none"
+              onChangeText={(text) => setEmail(text)}
             />
           </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.textFields}
+              secureTextEntry={true}
+              value={password}
+              placeholder="Password"
+              autoCapitalize="none"
+              onChangeText={(text) => setPassword(text)}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <View style={styles.loginButtonWrapper}>
+              <Button title="Login" onPress={() => signIn()} color="white" />
+            </View>
+            <View style={styles.createAccountButtonWrapper}>
+              <Button
+                title="Create Account"
+                onPress={() => signUp()}
+                color="#C07A5D"
+              />
+            </View>
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0,
     justifyContent: "center",
     backgroundColor: "#EADDCA",
     alignItems: "center",
@@ -123,7 +128,7 @@ const styles = StyleSheet.create({
   },
   topSection: {
     alignItems: "center",
-    marginBottom: 130,
+    marginBottom: 50,
   },
   bottomSection: {
     width: "100%",
@@ -151,18 +156,19 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     overflow: "hidden",
     marginBottom: 10,
-    backgroundColor: "#8B4513",
+    backgroundColor: "#C07A5D",
   },
   createAccountButtonWrapper: {
     borderRadius: 50,
     overflow: "hidden",
     marginBottom: 10,
     borderWidth: 3,
-    borderColor: "#8B4513",
+    borderColor: "#C07A5D",
   },
   textFields: {
     borderWidth: 3,
-    borderColor: "#5C4033",
+    borderColor: "#C07A5D",
+
     borderRadius: 5,
     height: 50,
     marginBottom: 10,

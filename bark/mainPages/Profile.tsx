@@ -184,7 +184,7 @@ export default function Profile() {
 }
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: "#f0eada",
+    backgroundColor: "#EADDCA",
   },
   dogName: {
     fontSize: 35,
