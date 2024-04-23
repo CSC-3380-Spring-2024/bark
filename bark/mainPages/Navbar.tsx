@@ -24,17 +24,16 @@ export default function Navbar() {
         headerStyle: { backgroundColor: darkerBrown },
         tabBarItemStyle: {
           borderWidth: 1,
-          borderColor: darkerBrown,
+          borderColor: lighterBrown,
           borderBottomColor: darkerBrown,
           borderBlockEndColor: darkerBrown,
           borderBottomWidth: 40,
-          borderRightColor: darkerBrown,
-          borderLeftColor: darkerBrown,
+          //   borderEndColor: lighterBrown,
           height: 100,
+          //   borderStartColor: lighterBrown,
         },
         tabBarStyle: {
           paddingBottom: 0,
-          backgroundColor: lighterBrown,
           height: 90,
         },
       }}
