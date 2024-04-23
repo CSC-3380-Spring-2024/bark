@@ -11,6 +11,8 @@ import {
   Pressable,
 } from "react-native";
 
+import DogLogo from '../assets/barkLogo.png';
+
 import {
   FIREBASE_DATABASE,
   FIREBASE_AUTH,
@@ -189,8 +191,14 @@ export default function Profile() {
             marginBottom: "3%",
           }}
         />
-        <Text style={styles.ownerName}>{name}</Text>
+        <View style={{flexDirection:"row", justifyContent:"center"}}>
+          <Text style={styles.ownerName}>Owner: </Text>
+          <Text style={styles.ownerName}>{name}</Text>
+        </View>
+        <Image source={DogLogo} style={styles.logo} />
       </View>
+
+
     </ScrollView>
   );
 }
@@ -199,7 +207,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f0eada",
   },
   dogName: {
-    fontSize: 35,
+    fontSize: 25,
     color: "black",
     flexWrap: "wrap",
     marginTop: 5,
@@ -207,16 +215,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   ownerName: {
-    fontSize: 35,
+    fontSize: 16,
     color: "black",
     alignSelf: "center",
     fontWeight: "bold",
   },
   infoText: {
-    fontSize: 20,
+    fontSize: 16,
     color: "black",
     marginVertical: 0,
     marginHorizontal: 10,
+    marginBottom: 10
   },
   dognouns: {
     fontSize: 15,
@@ -280,4 +289,10 @@ const styles = StyleSheet.create({
     height: 35,
     backgroundColor: "transparent",
   },
+  logo:{
+    width: 75,
+    height: 75,
+    alignSelf: "center",
+    marginTop: 60,
+  }
 });

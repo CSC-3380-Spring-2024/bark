@@ -6,7 +6,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, on
 import { ref, set } from "@firebase/database";
 import { StyleSheet } from 'react-native';
 
-import DogLogo from '../assets/logo.png';
+import DogLogo from '../assets/barkLogo.png';
 
 export default function LandingPage(props: { setLoginStatus: (arg0: boolean) => void; }) {
     const [email, setEmail] = useState('');
@@ -84,7 +84,7 @@ export default function LandingPage(props: { setLoginStatus: (arg0: boolean) => 
                         <Button title="Login" onPress={() => signIn()} color="white" />
                     </View>
                     <View style={styles.createAccountButtonWrapper}>
-                        <Button title="Create Account" onPress={() => signUp()} color="brown" />
+                        <Button title="Create Account" onPress={() => signUp()} color='#5C4033' />
                     </View>
                 </View>
             </View>
@@ -109,14 +109,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     dogLogo: {
-        width: 500,
-        height: 350,
+        width: 250,
+        height: 250,
         resizeMode: "contain",
+        marginLeft: -35
     },
     barkText: {
         fontSize: 25,
         fontWeight: "bold",
-        marginTop: -80,
+        marginTop: -35,
     },
     inputContainer: {
         marginBottom: 20,
@@ -130,14 +131,14 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         overflow: 'hidden',
         marginBottom: 10,
-        backgroundColor: "#8B4513",
+        backgroundColor: "#895C3E",
     },
     createAccountButtonWrapper: {
         borderRadius: 50,
         overflow: 'hidden',
         marginBottom: 10,
         borderWidth: 3,
-        borderColor: "#8B4513",
+        borderColor: "#895C3E",
     },
     textFields: {
         borderWidth: 3,
