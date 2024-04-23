@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { ActivityIndicator, Button, TextInput, View, Image, Text } from 'react-native';
+import { ActivityIndicator, Button, TextInput, View, Image, Text, KeyboardAvoidingView } from 'react-native';
 import { FIREBASE_AUTH, FIREBASE_DATABASE } from '../FirebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, onAuthStateChanged } from '@firebase/auth';
 import { ref, set } from "@firebase/database";
@@ -59,6 +59,7 @@ export default function LandingPage(props: { setLoginStatus: (arg0: boolean) => 
                 <Image source={DogLogo} style={styles.dogLogo} />
                 <Text style={styles.barkText}>BARK.</Text>
             </View>
+        <KeyboardAvoidingView style={styles.bottomSection} behavior="padding">
             <View style={styles.bottomSection}>
                 <View style={styles.inputContainer}>
                     <TextInput
@@ -88,7 +89,8 @@ export default function LandingPage(props: { setLoginStatus: (arg0: boolean) => 
                     </View>
                 </View>
             </View>
-        </View>
+        </KeyboardAvoidingView>
+    </View>
     );
 }
 
