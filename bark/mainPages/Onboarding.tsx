@@ -6,6 +6,7 @@ import {
   Pressable,
   ScrollView,
   TextInput,
+  KeyboardAvoidingView,
 } from "react-native";
 
 import {
@@ -52,7 +53,8 @@ export default function Onboarding(props: {
 
   return (
     <>
-      <ScrollView style={styles.mainContainer}>
+      <KeyboardAvoidingView style={styles.mainContainer} behavior="padding">
+        <ScrollView>
         {/* Back button only appears if in edit settings mode not setting up account */}
         {props.editProf && (
           <Pressable onPress={back} style={styles.button}>
@@ -112,7 +114,8 @@ export default function Onboarding(props: {
             <Text style={styles.buttonText}> Finish profile </Text>
           </Pressable>
         </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 }
