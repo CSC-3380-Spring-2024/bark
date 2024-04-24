@@ -8,6 +8,7 @@ import {
   Image,
   Text,
   ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
 import {
@@ -62,6 +63,7 @@ export default function LandingPage(props: {
         set(ref(FIREBASE_DATABASE, "users/" + userCredential.user.uid), {
           username: email,
           email: email,
+          onBoarded: false,
         });
       });
       props.setLoginStatus(true);
@@ -74,7 +76,7 @@ export default function LandingPage(props: {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: "#EADDCA" }} bounces={false}>
+    <KeyboardAvoidingView style={{ backgroundColor: "#EADDCA" }}>
       <View style={styles.container}>
         <View style={styles.topSection}>
           <Image source={DogLogo} style={styles.dogLogo} />
@@ -114,7 +116,7 @@ export default function LandingPage(props: {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 

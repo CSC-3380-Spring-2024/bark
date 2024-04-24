@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./Home";
 import Profile from "./Profile";
@@ -8,6 +8,8 @@ import LandingPage from "./LandingPage";
 import Onboarding from "./Onboarding";
 import { FontAwesome } from "@expo/vector-icons";
 import { View } from "react-native-reanimated/lib/typescript/Animated";
+import { push, ref, get } from "@firebase/database";
+import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Tab = createBottomTabNavigator();
@@ -15,7 +17,33 @@ var darkerBrown = "#C07A5D";
 var lighterBrown = "#EADDCA";
 
 export default function Navbar() {
-  return (
+  const [onBoard, getOnboarded] = useState<boolean>(true);
+  const userRef = ref(
+    FIREBASE_DATABASE,
+    `users/${FIREBASE_AUTH.currentUser?.uid}/`
+  );
+
+  //PULL USER DATA FROM DATABASE
+  get(userRef)
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        getOnboarded(snapshot.val().onBoarded);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  return !onBoard ? (
+    <Onboarding
+      editingProf={() => {}}
+      signingUp={getOnboarded}
+      editProf={false}
+      nameProp={""}
+      dogNameProp={""}
+      bioProp={""}
+    />
+  ) : (
     <Tab.Navigator
       screenOptions={{
         tabBarActiveBackgroundColor: darkerBrown,
