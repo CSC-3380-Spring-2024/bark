@@ -6,6 +6,7 @@ import {
   Pressable,
   ScrollView,
   TextInput,
+  Alert,
   KeyboardAvoidingView,
 } from "react-native";
 
@@ -17,11 +18,12 @@ import {
 import { set, ref, get } from "@firebase/database";
 import { ImageUploader } from "../components/imageUploader";
 import { Chips } from "../components/Chips";
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { ref as storageRef, getDownloadURL, list } from "@firebase/storage";
 
 export default function Onboarding(props: {
   editingProf: (arg0: boolean) => void;
+  signingUp: (arg0: boolean) => void;
   editProf: boolean;
   nameProp: string;
   dogNameProp: string;
@@ -31,20 +33,75 @@ export default function Onboarding(props: {
   const [dogName, setDogName] = useState<string>(props.dogNameProp);
   const [bio, setBio] = useState<string>(props.bioProp);
   const [characterCount, setCharacterCount] = useState<number>(0);
+  // const [image0, setImage0] = useState<string>();
+  // const [image1, setImage1] = useState<string>();
+  // const [image2, setImage2] = useState<string>();
+  // const [image3, setImage3] = useState<string>();
+  // const [image4, setImage4] = useState<string>();
+
+  // function setRightImage(uri: string, index: number) {
+  //   switch (index) {
+  //     case 0:
+  //       setImage0(uri);
+  //       break;
+  //     case 1:
+  //       setImage1(uri);
+  //       break;
+  //     case 2:
+  //       setImage2(uri);
+  //       break;
+  //     case 3:
+  //       setImage3(uri);
+  //       break;
+  //     case 4:
+  //       setImage4(uri);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
+  // useEffect(() => {
+  //   const getImage = async () => {
+  //     //getStorageRef
+  //     for (let i = 0; i < 5; i++) {
+  //       const imgRef = storageRef(
+  //         FIREBASE_STORAGE,
+  //         `images/${FIREBASE_AUTH.currentUser?.uid}/profileImage${i}`
+  //       );
+
+  //       await getDownloadURL(imgRef)
+  //         .then((response) => {
+  //           setRightImage(response, i);
+  //         })
+  //         .catch((response) => {
+  //           console.log(response);
+  //         });
+  //     }
+  //   };
+
+  //   if (image0 == undefined) {
+  //     getImage();
+  //   }
+  // }, []);
 
   const submitScreen = async () => {
-    const response = await set(
-      ref(FIREBASE_DATABASE, "users/" + FIREBASE_AUTH.currentUser?.uid),
-      {
-        name: name,
-        dogName: dogName,
-        bio: bio,
-        onBoarded: true,
-      }
-    ).then((reply) => {
-      console.log(reply);
-      props.editingProf(false);
-    });
+    if (name === "" || dogName === "" || bio === "") {
+      Alert.alert("Please fill out all of the text fields");
+    } else {
+      const response = await set(
+        ref(FIREBASE_DATABASE, "users/" + FIREBASE_AUTH.currentUser?.uid),
+        {
+          name: name,
+          dogName: dogName,
+          bio: bio,
+          onBoarded: true,
+        }
+      ).then((reply) => {
+        console.log(reply);
+        props.editingProf(false);
+        props.signingUp(true);
+      });
+    }
   };
 
   const back = () => {
@@ -61,6 +118,7 @@ export default function Onboarding(props: {
             <Text style={styles.buttonText}> {"<"} Back </Text>
           </Pressable>
         )}
+        {!props.editProf && <View style={{ height: 70 }}></View>}
         {/*Get Owner's and Dog's name */}
         <View style={styles.screen}>
           <Text style={styles.text}>Name</Text>
