@@ -6,12 +6,19 @@ import {
   StyleSheet,
   TextInput,
 } from "react-native";
-import { FIREBASE_AUTH } from "../FirebaseConfig";
-import { getAuth, updatePassword } from "firebase/auth";
+import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
+import { getAuth, updateEmail, updatePassword } from "firebase/auth";
+import { ref, set } from "@firebase/database";
+import { useState } from "react";
 
 export default function Settings(props: {
   goToSettings: (arg0: boolean) => void;
 }) {
+  const auth = getAuth();
+  const user = auth.currentUser as any;
+  const [pswd, updatePswd] = useState<string>(user.email);
+  const [email, changeEmail] = useState<string>("");
+
   function signOut() {
     FIREBASE_AUTH.signOut()
       .then(() => {
@@ -28,30 +35,58 @@ export default function Settings(props: {
   const back = () => {
     props.goToSettings(false);
   };
-  const auth = getAuth();
-  const user = auth.currentUser;
+
+  function update() {
+    var count = 0;
+    if (pswd !== "") {
+      updatePassword(user, pswd).then(
+        () => {
+          // Update successful.
+        },
+        (error) => {
+          // An error happened.
+        }
+      );
+      count++;
+    }
+    if (email !== "") {
+      updateEmail(user, email);
+      count++;
+    }
+    if (count > 0) {
+      Alert.alert("Your changes have been saved.");
+    }
+  }
+
+  // const setEmail = async () => {
+  //   // set(ref(FIREBASE_DATABASE, "users/" + user.uid), {
+  //   //   username: email,
+  //   //   email: email,
+  //   // });
+  //   user.updatePassword(pswd);
+  // };
   return (
     <View style={styles.mainContainer}>
       <View style={styles.marginHorizontal}>
         <Pressable onPress={back} style={styles.button}>
           <Text style={styles.buttonText}> {"<"} Back </Text>
         </Pressable>
-        <Text style={styles.text}>Change username: </Text>
+        <Text style={styles.text}>Change email: </Text>
         <TextInput
           style={styles.textInputs}
-          placeholder=" Type NEW username here"
+          placeholder=" Type NEW email here"
+          onChangeText={(text) => changeEmail(text)}
+          defaultValue={email}
         ></TextInput>
         <Text style={styles.text}>Change password: </Text>
         <TextInput
           //onChangeText={(value)=>}
           style={styles.textInputs}
           placeholder=" Type NEW password here"
+          onChangeText={(text) => updatePswd(text)}
         ></TextInput>
         {/* Save Button */}
-        <Pressable
-          onPress={() => Alert.alert("All changes have been saved")}
-          style={styles.button}
-        >
+        <Pressable onPress={() => update()} style={styles.button}>
           <Text style={styles.buttonText}> Save Changes </Text>
         </Pressable>
 

@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -5,20 +6,16 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-  Button,
-  Alert,
   TouchableHighlight,
   Dimensions,
+  ImageBackground,
 } from "react-native";
-
+import { FontAwesome } from '@expo/vector-icons';
 import { get as databaseGet, ref as databaseRef } from "@firebase/database";
 import { getDownloadURL, ref as storageRef } from "@firebase/storage";
-import { useEffect, useState } from "react";
-import {
-  FIREBASE_AUTH,
-  FIREBASE_DATABASE,
-  FIREBASE_STORAGE,
-} from "../FirebaseConfig";
+import { FIREBASE_AUTH, FIREBASE_DATABASE, FIREBASE_STORAGE } from "../FirebaseConfig";
+import dogBoneImage from '../assets/bone-2.png';
+
 const dimensions = Dimensions.get("window");
 
 export default function GeneratedProf({
@@ -78,7 +75,6 @@ export default function GeneratedProf({
 
   useEffect(() => {
     const getImage = async () => {
-      //getStorageRef
       for (let i = 0; i < 5; i++) {
         const imgRef = storageRef(
           FIREBASE_STORAGE,
@@ -100,14 +96,11 @@ export default function GeneratedProf({
 
   return (
     <ScrollView>
-      <SafeAreaView>
-        <View style={{ flexDirection: "row" }}>
-          <View>
-            <Text style={styles.username}>{dogName}</Text>
-            {/*<Text style={{ fontSize: 12, color: "black", marginTop: 1 }}>
-              Location or smth
-             </Text>*/}
-          </View>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.dogNameContainer}>
+          <ImageBackground source={dogBoneImage} style={styles.dogBoneImage}>
+            <Text style={styles.dogNameText}>{dogName}</Text>
+          </ImageBackground>
         </View>
 
         <View>
@@ -135,7 +128,7 @@ export default function GeneratedProf({
             </View>
           </ScrollView>
 
-          <View style={styles.viewContainer}>
+          <View style={styles.buttonContainer}>
             <TouchableHighlight
               onPress={() => {
                 deny();
@@ -143,7 +136,7 @@ export default function GeneratedProf({
               underlayColor="transparent"
             >
               <View style={styles.view2}>
-                <Text style={styles.buttonText}>Pass</Text>
+                <FontAwesome name="remove" size={24} color="black" />
               </View>
             </TouchableHighlight>
             <TouchableHighlight
@@ -153,26 +146,16 @@ export default function GeneratedProf({
               underlayColor="transparent"
             >
               <View style={styles.view}>
-                <Text style={styles.buttonText}>Match!</Text>
+                <FontAwesome name="paw" size={24} color="black" />
               </View>
             </TouchableHighlight>
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text style={styles.headings}>Name:</Text>
-            <Text
-              style={{
-                fontSize: 18,
-                fontFamily: "Apple SD Gothic Neo",
-                color: "black",
-                marginVertical: 7,
-              }}
-            >
-              {name}
-            </Text>
+          <View style={styles.bioContainer}>
+            <View style={styles.bioBox}>
+              <Text style={styles.headings}>Bio:</Text>
+              <Text style={styles.dogBio}>{bio}</Text>
+            </View>
           </View>
-          <Text style={styles.headings}>Bio:</Text>
-          <Text style={styles.dogBio}>{bio}</Text>
-          <View style={styles.container}></View>
         </View>
       </SafeAreaView>
     </ScrollView>
@@ -181,20 +164,42 @@ export default function GeneratedProf({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    flex: 2,
+    backgroundColor: "#EADDCA",
   },
-
-  headings: {
-    fontSize: 18,
-    //color:"#6F8FAF",
-    fontWeight: "bold",
-    fontFamily: "Apple SD Gothic Neo",
-    marginVertical: 7,
+  userInfoContainer: {
+    flexDirection: "row",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  bioContainer: {
     marginHorizontal: 10,
   },
-
+  bioBox: {
+    backgroundColor: '#A67B5B',
+    borderWidth: 5,
+    borderColor: "#A67B5B",
+    borderRadius: 25,
+    padding: 10,
+    marginHorizontal: 10,
+    marginTop: 30,
+    marginBottom: 90,
+  },
+  dogBio: {
+    fontSize: 16,
+    color: "whitesmoke",
+    fontFamily: "Apple SD Gothic Neo",
+  },
+  headings: {
+    fontSize: 28,
+    fontWeight: "bold",
+    fontFamily: "Apple SD Gothic Neo",
+    color: "whitesmoke",
+    marginBottom: 5,
+  },
   dogPicsContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -202,24 +207,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
   },
-
-  profilePic: {
-    width: 40,
-    height: 40,
-    borderRadius: 40 / 2,
-    alignSelf: "flex-start",
-    marginHorizontal: 10,
-    marginVertical: 7,
-  },
-
-  dogBio: {
-    fontSize: 16,
-    color: "black",
-    alignSelf: "flex-start",
-    fontFamily: "Apple SD Gothic Neo",
-    marginHorizontal: 15,
-  },
-
   dogPics: {
     width: dimensions.width - 20,
     height: 400,
@@ -231,40 +218,42 @@ const styles = StyleSheet.create({
     marginLeft: 3,
     justifyContent: "center",
   },
-
   view: {
-    width: dimensions.width / 2,
-    height: 30,
+    width: 150,
+    height: 50,
     backgroundColor: "lightgreen",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 10,
+    borderRadius: 25,
+    marginHorizontal: 50,
   },
-
   view2: {
-    width: dimensions.width / 2,
-    height: 30,
+    width: 150,
+    height: 50,
     backgroundColor: "#FF3131",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 10,
+    borderRadius: 35,
+    marginHorizontal: 50,
   },
-
-  viewContainer: {
-    flexDirection: "row",
-  },
-
   buttonText: {
-    fontWeight: "bold",
-    fontSize: 14,
-    color: "black",
-    fontFamily: "Apple SD Gothic Neo",
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
   },
-
-  username: {
-    fontSize: 30,
-    color: "black",
-    marginTop: 12,
-    fontWeight: "bold",
+  dogNameContainer: {
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  dogBoneImage: {
+    width: 130,
+    height: 90,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dogNameText: {
+    fontSize: 20,
+    color: '#825D09',
+    fontWeight: 'bold',
   },
 });
