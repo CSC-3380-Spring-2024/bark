@@ -10,11 +10,15 @@ import {
   Dimensions,
   ImageBackground,
 } from "react-native";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
 import { get as databaseGet, ref as databaseRef } from "@firebase/database";
 import { getDownloadURL, ref as storageRef } from "@firebase/storage";
-import { FIREBASE_AUTH, FIREBASE_DATABASE, FIREBASE_STORAGE } from "../FirebaseConfig";
-import dogBoneImage from '../assets/bone-2.png';
+import {
+  FIREBASE_AUTH,
+  FIREBASE_DATABASE,
+  FIREBASE_STORAGE,
+} from "../FirebaseConfig";
+import dogBoneImage from "../assets/bone-2.png";
 
 const dimensions = Dimensions.get("window");
 
@@ -95,7 +99,7 @@ export default function GeneratedProf({
   }, [uuid]);
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.container}>
       <SafeAreaView style={styles.container}>
         <View style={styles.dogNameContainer}>
           <ImageBackground source={dogBoneImage} style={styles.dogBoneImage}>
@@ -238,22 +242,22 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: 'black',
+    fontWeight: "bold",
+    color: "black",
   },
   dogNameContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 10,
   },
   dogBoneImage: {
     width: 130,
     height: 90,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   dogNameText: {
     fontSize: 20,
-    color: '#825D09',
-    fontWeight: 'bold',
+    color: "#825D09",
+    fontWeight: "bold",
   },
 });

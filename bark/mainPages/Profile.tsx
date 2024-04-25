@@ -11,6 +11,8 @@ import {
   Pressable,
 } from "react-native";
 
+import DogLogo from "../assets/barkLogo.png";
+
 import {
   FIREBASE_DATABASE,
   FIREBASE_AUTH,
@@ -105,6 +107,7 @@ export default function Profile() {
   return editProf ? (
     <Onboarding
       editingProf={editingProf}
+      signingUp={() => {}}
       editProf={editProf}
       nameProp={name}
       dogNameProp={dogName}
@@ -113,8 +116,8 @@ export default function Profile() {
   ) : settings ? (
     <Settings goToSettings={goToSettings} />
   ) : (
-    <ScrollView style={styles.mainContainer} bounces={false}>
-      <View style={{ flexGrow: 1, marginHorizontal: "3%" }}>
+    <View style={styles.mainContainer}>
+      <View style={{ marginHorizontal: "3%" }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.dogName}>
             {dogName}
@@ -140,14 +143,13 @@ export default function Profile() {
         {/* {pronouns && <Text style={styles.dognouns}>{pronouns} </Text>} */}
         <View
           style={{
-            flex: 1,
             height: 2,
             backgroundColor: "black",
             marginBottom: 10,
           }}
         />
       </View>
-      <View style={{ flexGrow: 1 }}>
+      <View style={{}}>
         <ScrollView horizontal={true}>
           {image0 && <Image style={styles.image} source={{ uri: image0 }} />}
           {image1 && <Image style={styles.image} source={{ uri: image1 }} />}
@@ -178,33 +180,42 @@ export default function Profile() {
             marginBottom: "3%",
           }}
         />
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <Text style={styles.ownerName}>Owner: </Text>
+          <Text style={styles.ownerName}>{name}</Text>
+        </View>
       </View>
-    </ScrollView>
+      <Image source={DogLogo} style={styles.logo} />
+    </View>
   );
 }
 const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: "#EADDCA",
+    position: "absolute",
+    bottom: 0,
+    top: 0,
   },
   dogName: {
-    fontSize: 35,
+    fontSize: 25,
     color: "black",
     flexWrap: "wrap",
-    marginTop: 5,
+    marginTop: 10,
     marginVertical: 5,
     fontWeight: "bold",
   },
   ownerName: {
-    fontSize: 20,
-    color: "#808080",
+    fontSize: 16,
+    color: "black",
     alignSelf: "center",
     fontWeight: "bold",
   },
   infoText: {
-    fontSize: 20,
+    fontSize: 16,
     color: "black",
     marginVertical: 0,
     marginHorizontal: 10,
+    marginBottom: 10,
   },
   dognouns: {
     fontSize: 15,
@@ -258,14 +269,22 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     marginHorizontal: 10,
     marginBottom: 5,
     fontWeight: "bold",
   },
   gear: {
-    width: 35,
-    height: 35,
+    width: 25,
+    height: 25,
     backgroundColor: "transparent",
+    marginLeft: 8,
+  },
+  logo: {
+    width: 70,
+    height: 70,
+    alignSelf: "center",
+    position: "absolute",
+    bottom: 0,
   },
 });
