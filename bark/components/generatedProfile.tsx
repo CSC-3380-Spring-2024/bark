@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   Dimensions,
   ImageBackground,
+  Alert,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { get as databaseGet, ref as databaseRef } from "@firebase/database";
@@ -102,9 +103,7 @@ export default function GeneratedProf({
     <ScrollView style={styles.container}>
       <SafeAreaView style={styles.container}>
         <View style={styles.dogNameContainer}>
-          <ImageBackground source={dogBoneImage} style={styles.dogBoneImage}>
-            <Text style={styles.dogNameText}>{dogName}</Text>
-          </ImageBackground>
+          <Text style={styles.dogNameText}>{dogName}</Text>
         </View>
 
         <View>
@@ -183,9 +182,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   bioBox: {
-    backgroundColor: '#C4A484',
+    backgroundColor: "#A67B5B",
     borderWidth: 5,
-    borderColor: "#7c5f20",
+    borderColor: "#A67B5B",
     borderRadius: 25,
     padding: 10,
     marginHorizontal: 10,
@@ -194,14 +193,14 @@ const styles = StyleSheet.create({
   },
   dogBio: {
     fontSize: 16,
-    color: "black",
+    color: "whitesmoke",
     fontFamily: "Apple SD Gothic Neo",
   },
   headings: {
     fontSize: 28,
     fontWeight: "bold",
     fontFamily: "Apple SD Gothic Neo",
-    color: "black",
+    color: "whitesmoke",
     marginBottom: 5,
   },
   dogPicsContainer: {
@@ -229,7 +228,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 25,
-    marginHorizontal: 50,
+    marginHorizontal: 30,
   },
   view2: {
     width: 150,
@@ -238,7 +237,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 35,
-    marginHorizontal: 50,
+    marginHorizontal: 30,
   },
   buttonText: {
     fontSize: 18,
@@ -247,16 +246,16 @@ const styles = StyleSheet.create({
   },
   dogNameContainer: {
     alignItems: "center",
-    marginTop: 10,
+    marginVertical: 10,
   },
   dogBoneImage: {
-    width: 130,
-    height: 90,
-    justifyContent: "center",
-    alignItems: "center",
+    width: 100,
+    height: 50,
+    // justifyContent: "center",
+    // alignItems: "center",
   },
   dogNameText: {
-    fontSize: 20,
+    fontSize: 25,
     color: "#825D09",
     fontWeight: "bold",
   },
