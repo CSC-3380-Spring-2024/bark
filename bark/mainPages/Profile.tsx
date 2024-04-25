@@ -105,6 +105,7 @@ export default function Profile() {
   return editProf ? (
     <Onboarding
       editingProf={editingProf}
+      signingUp={() => {}}
       editProf={editProf}
       nameProp={name}
       dogNameProp={dogName}
