@@ -179,9 +179,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   bioBox: {
-    backgroundColor: '#A67B5B',
+    backgroundColor: '#C4A484',
     borderWidth: 5,
-    borderColor: "#A67B5B",
+    borderColor: "#7c5f20",
     borderRadius: 25,
     padding: 10,
     marginHorizontal: 10,
@@ -190,14 +190,14 @@ const styles = StyleSheet.create({
   },
   dogBio: {
     fontSize: 16,
-    color: "whitesmoke",
+    color: "black",
     fontFamily: "Apple SD Gothic Neo",
   },
   headings: {
     fontSize: 28,
     fontWeight: "bold",
     fontFamily: "Apple SD Gothic Neo",
-    color: "whitesmoke",
+    color: "black",
     marginBottom: 5,
   },
   dogPicsContainer: {

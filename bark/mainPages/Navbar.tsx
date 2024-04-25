@@ -11,7 +11,7 @@ import { View } from "react-native-reanimated/lib/typescript/Animated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Tab = createBottomTabNavigator();
-var darkerBrown = "#C07A5D";
+var darkerBrown = "#C4A484";
 var lighterBrown = "#EADDCA";
 
 export default function Navbar() {

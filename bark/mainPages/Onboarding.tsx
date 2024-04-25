@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: 260,
     marginLeft: 0,
+   
   },
   button: {
     // backgroundColor: "",
@@ -131,13 +132,13 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderWidth: 2.5,
-    borderColor: "sienna",
+    borderColor: "#825D09",
     marginHorizontal: "3%",
     marginVertical: "3%",
   },
   buttonText: {
     fontSize: 20,
-    color: "sienna",
+    color: "#825D09",
     fontWeight: "bold",
   },
   screen: {
@@ -161,12 +162,13 @@ const styles = StyleSheet.create({
   },
   textInputs: {
     borderBottomWidth: 4,
-    borderColor: "black",
+    borderColor: "#825D09",
     height: 60,
     fontSize: 20,
   },
   textInputsBio: {
-    borderColor: "black",
+    borderColor: "#825D09",
+    backgroundColor: "white",
     borderWidth: 1,
     borderRadius: 10,
     height: 160,
