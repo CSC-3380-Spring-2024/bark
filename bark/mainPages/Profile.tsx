@@ -11,7 +11,7 @@ import {
   Pressable,
 } from "react-native";
 
-import DogLogo from '../assets/barkLogo.png';
+import DogLogo from "../assets/barkLogo.png";
 
 import {
   FIREBASE_DATABASE,
@@ -116,8 +116,8 @@ export default function Profile() {
   ) : settings ? (
     <Settings goToSettings={goToSettings} />
   ) : (
-    <ScrollView style={styles.mainContainer} bounces={false}>
-      <View style={{ flexGrow: 1, marginHorizontal: "3%" }}>
+    <View style={styles.mainContainer}>
+      <View style={{ marginHorizontal: "3%" }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.dogName}>
             {dogName}
@@ -143,14 +143,13 @@ export default function Profile() {
         {/* {pronouns && <Text style={styles.dognouns}>{pronouns} </Text>} */}
         <View
           style={{
-            flex: 1,
             height: 2,
             backgroundColor: "black",
             marginBottom: 10,
           }}
         />
       </View>
-      <View style={{ flexGrow: 1 }}>
+      <View style={{}}>
         <ScrollView horizontal={true}>
           {image0 && <Image style={styles.image} source={{ uri: image0 }} />}
           {image1 && <Image style={styles.image} source={{ uri: image1 }} />}
@@ -181,20 +180,21 @@ export default function Profile() {
             marginBottom: "3%",
           }}
         />
-        <View style={{flexDirection:"row", justifyContent:"center"}}>
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Text style={styles.ownerName}>Owner: </Text>
           <Text style={styles.ownerName}>{name}</Text>
         </View>
-        <Image source={DogLogo} style={styles.logo} />
       </View>
-
-
-    </ScrollView>
+      <Image source={DogLogo} style={styles.logo} />
+    </View>
   );
 }
 const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: "#EADDCA",
+    position: "absolute",
+    bottom: 0,
+    top: 0,
   },
   dogName: {
     fontSize: 25,
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     color: "black",
     marginVertical: 0,
     marginHorizontal: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   dognouns: {
     fontSize: 15,
@@ -279,10 +279,11 @@ const styles = StyleSheet.create({
     height: 35,
     backgroundColor: "transparent",
   },
-  logo:{
+  logo: {
     width: 75,
     height: 75,
     alignSelf: "center",
-    marginTop: 60,
-  }
+    position: "absolute",
+    bottom: 0,
+  },
 });
