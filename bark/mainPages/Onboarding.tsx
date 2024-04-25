@@ -112,66 +112,65 @@ export default function Onboarding(props: {
     <>
       <KeyboardAvoidingView style={styles.mainContainer} behavior="padding">
         <ScrollView>
-        {/* Back button only appears if in edit settings mode not setting up account */}
-        {props.editProf && (
-          <Pressable onPress={back} style={styles.button}>
-            <Text style={styles.buttonText}> {"<"} Back </Text>
-          </Pressable>
-        )}
-        {!props.editProf && <View style={{ height: 70 }}></View>}
-        {/*Get Owner's and Dog's name */}
-        <View style={styles.screen}>
-          <Text style={styles.text}>Name</Text>
-          <TextInput
-            onChangeText={setName}
-            defaultValue={props.nameProp}
-            style={styles.textInputs}
-            placeholder="Type YOUR name here"
-          ></TextInput>
-        </View>
-        <View style={styles.screen}>
-          <Text style={styles.text}>Dog name</Text>
-          <TextInput
-            onChangeText={setDogName}
-            defaultValue={props.dogNameProp}
-            style={styles.textInputs}
-            placeholder={'ex: "susie"'}
-          ></TextInput>
-        </View>
-        {/*Then get pictures */}
-        <View style={styles.screen}>
-          <Text style={styles.text}>Pictures</Text>
-          <ScrollView horizontal={true} style={styles.profileImagesContainer}>
-            <ImageUploader index={0} />
-            <ImageUploader index={1} />
-            <ImageUploader index={2} />
-            <ImageUploader index={3} />
-            <ImageUploader index={4} />
-          </ScrollView>
-        </View>
-        {/*Get profile bio*/}
-        <View style={styles.screen}>
-          <Text style={styles.text}>Bio</Text>
-          <TextInput
-            onChangeText={(text) => {
-              setBio(text);
-              setCharacterCount(text.length);
-            }}
-            defaultValue={props.bioProp}
-            placeholder="Bio here..."
-            maxLength={240}
-            multiline={true}
-            scrollEnabled={false}
-            style={styles.textInputsBio}
-          ></TextInput>
-          <Text style={styles.characterLimitText}>{characterCount} / 240</Text>
-        </View>
+          {/* Back button only appears if in edit settings mode not setting up account */}
+          {props.editProf && (
+            <Pressable onPress={back} style={styles.button}>
+              <Text style={styles.buttonText}> {"<"} Back </Text>
+            </Pressable>
+          )}
+          {/*Get Owner's and Dog's name */}
+          <View style={styles.screen}>
+            <Text style={styles.text}>Owner name</Text>
+            <TextInput
+              onChangeText={setName}
+              defaultValue={props.nameProp}
+              style={styles.textInputs}
+              placeholder="Type YOUR name here"
+            ></TextInput>
+          </View>
+          <View style={styles.screen}>
+            <Text style={styles.text}>Dog name</Text>
+            <TextInput
+              onChangeText={setDogName}
+              defaultValue={props.dogNameProp}
+              style={styles.textInputs}
+              placeholder={'ex: "Susie"'}
+            ></TextInput>
+          </View>
+          {/*Then get pictures */}
+          <View style={styles.screen}>
+            <Text style={styles.text}>Pictures</Text>
+            <ScrollView horizontal={true} style={styles.profileImagesContainer}>
+              <ImageUploader index={0} />
+              <ImageUploader index={1} />
+              <ImageUploader index={2} />
+              <ImageUploader index={3} />
+              <ImageUploader index={4} />
+            </ScrollView>
+          </View>
+          {/*Get profile bio*/}
+          <View style={styles.screen}>
+            <Text style={styles.text}>Bio</Text>
+            <TextInput
+              onChangeText={(text) => {
+                setBio(text);
+                setCharacterCount(text.length);
+              }}
+              defaultValue={props.bioProp}
+              placeholder="Bio here..."
+              maxLength={240}
+              multiline={true}
+              scrollEnabled={false}
+              style={styles.textInputsBio}
+            ></TextInput>
+            <Text style={styles.characterLimitText}>{characterCount} / 240</Text>
+          </View>
 
-        <View style={{ alignSelf: "center", marginBottom: "5%" }}>
-          <Pressable onPress={submitScreen} style={styles.button}>
-            <Text style={styles.buttonText}> Finish profile </Text>
-          </Pressable>
-        </View>
+          <View style={{ alignSelf: "center", marginBottom: "5%" }}>
+            <Pressable onPress={submitScreen} style={styles.button}>
+              <Text style={styles.buttonText}> Finish profile </Text>
+            </Pressable>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </>
@@ -185,30 +184,27 @@ const styles = StyleSheet.create({
     marginLeft: 0,
   },
   button: {
-    // backgroundColor: "",
     alignSelf: "flex-start",
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderRadius: 10,
     borderWidth: 2.5,
-    borderColor: "sienna",
+    borderColor: "#895C3E",
     marginHorizontal: "3%",
     marginVertical: "3%",
   },
   buttonText: {
-    fontSize: 20,
-    color: "sienna",
+    fontSize: 18,
+    color: "#895C3E",
     fontWeight: "bold",
   },
   screen: {
-    marginBottom: 15,
+    marginBottom: 10,
     marginLeft: 10,
     marginRight: 10,
   },
   text: {
-    fontSize: 30,
+    fontSize: 18,
     fontWeight: "bold",
+    marginBottom: 10
   },
   characterLimitText: {
     fontStyle: "italic",
@@ -216,15 +212,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: "2%",
   },
-  centered: {},
   mainContainer: {
     backgroundColor: "#f0eada",
   },
   textInputs: {
-    borderBottomWidth: 4,
+    borderBottomWidth: 3,
     borderColor: "black",
     height: 60,
-    fontSize: 20,
+    fontSize: 16,
+    marginBottom: 5,
+    marginTop: -5
   },
   textInputsBio: {
     borderColor: "black",
@@ -233,6 +230,7 @@ const styles = StyleSheet.create({
     height: 160,
     fontSize: 15,
     padding: 10,
+    backgroundColor: "white"
   },
 });
 

@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: "black",
     flexWrap: "wrap",
-    marginTop: 5,
+    marginTop: 10,
     marginVertical: 5,
     fontWeight: "bold",
   },
@@ -269,21 +269,22 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     marginHorizontal: 10,
     marginBottom: 5,
     fontWeight: "bold",
   },
   gear: {
-    width: 35,
-    height: 35,
+    width: 25,
+    height: 25,
     backgroundColor: "transparent",
+    marginLeft: 8
   },
-  logo: {
-    width: 75,
-    height: 75,
+  logo:{
+    width: 70,
+    height: 70,
     alignSelf: "center",
-    position: "absolute",
-    bottom: 0,
-  },
+    marginTop: 80,
+    marginLeft: -15
+  }
 });
