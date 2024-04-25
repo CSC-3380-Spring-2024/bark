@@ -18,11 +18,11 @@ import {
   getAuth,
   onAuthStateChanged,
 } from "@firebase/auth";
+
 import { ref, set } from "@firebase/database";
 import { StyleSheet } from "react-native";
 
-import DogLogo from "../assets/logo.png";
-//import { ScrollView } from "react-native-gesture-handler";
+import DogLogo from "../assets/barkLogo.png";
 
 export default function LandingPage(props: {
   setLoginStatus: (arg0: boolean) => void;
@@ -82,12 +82,12 @@ export default function LandingPage(props: {
   };
 
   return (
-    <KeyboardAvoidingView style={{ backgroundColor: "#EADDCA" }}>
-      <View style={styles.container}>
-        <View style={styles.topSection}>
-          <Image source={DogLogo} style={styles.dogLogo} />
-          <Text style={styles.barkText}>BARK.</Text>
-        </View>
+    <View style={styles.container}>
+      <View style={styles.topSection}>
+        <Image source={DogLogo} style={styles.dogLogo} />
+        <Text style={styles.barkText}>BARK.</Text>
+      </View>
+      <KeyboardAvoidingView style={styles.bottomSection} behavior="padding">
         <View style={styles.bottomSection}>
           <View style={styles.inputContainer}>
             <TextInput
@@ -116,19 +116,19 @@ export default function LandingPage(props: {
               <Button
                 title="Create Account"
                 onPress={() => signUp()}
-                color="#C07A5D"
+                color="#5C4033"
               />
             </View>
           </View>
         </View>
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0,
+    flex: 1,
     justifyContent: "center",
     backgroundColor: "#EADDCA",
     alignItems: "center",
@@ -136,21 +136,22 @@ const styles = StyleSheet.create({
   },
   topSection: {
     alignItems: "center",
-    marginBottom: 50,
+    marginBottom: 130,
   },
   bottomSection: {
     width: "100%",
     alignItems: "center",
   },
   dogLogo: {
-    width: 500,
-    height: 350,
+    width: 250,
+    height: 250,
     resizeMode: "contain",
+    marginLeft: -35,
   },
   barkText: {
     fontSize: 25,
     fontWeight: "bold",
-    marginTop: -80,
+    marginTop: -35,
   },
   inputContainer: {
     marginBottom: 20,
@@ -164,19 +165,18 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     overflow: "hidden",
     marginBottom: 10,
-    backgroundColor: "#C07A5D",
+    backgroundColor: "#895C3E",
   },
   createAccountButtonWrapper: {
     borderRadius: 50,
     overflow: "hidden",
     marginBottom: 10,
     borderWidth: 3,
-    borderColor: "#C07A5D",
+    borderColor: "#895C3E",
   },
   textFields: {
     borderWidth: 3,
-    borderColor: "#C07A5D",
-
+    borderColor: "#5C4033",
     borderRadius: 5,
     height: 50,
     marginBottom: 10,
