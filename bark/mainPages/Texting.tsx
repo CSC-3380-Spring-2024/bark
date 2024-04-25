@@ -1,25 +1,37 @@
 import {useState} from 'react';
 import {View, Text, StyleSheet, TextInput, Pressable, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView, Image} from 'react-native'
+import ChatBubbleLeft from "./ChatBubbleLeft"
 const sendImg = require("../assets/send button.png");
 
-export default function Texting(){
-    const [text, onChangeText] = useState('')
-    const [height, setHeight] = useState(0)
+export default function Texting(props:{
+    setChat: (arg0: boolean) => void;
+}){
+    const [height, setHeight] = useState(0);
+    const [send, myText] = useState<string>();
+    const back = ()=> {
+        props.setChat(false); 
+    }
+    const sendSubmit = ()=> {
+        props.myText();
+    }
     return(
 
         <View>
+             <Pressable onPress={back} >
+            <Text style = {{fontSize:50}}>
+                Back
+            </Text>
+        </Pressable> 
         {/* Makes the keyboard go above the text you are sending */}
         <KeyboardAvoidingView behavior={'height'} keyboardVerticalOffset={90}>
-
         {/* Makes the keyboard vanish when tapping somewhere else */}
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         
-        <View style={styles.bigFlex}>
-
+        <View style={styles.bigFlex}> 
             {/* Everything in the texting box */}
             <View style={styles.textingBox}>
-            <TextInput onChangeText={onChangeText}  placeholder = "Send your message here..." value={text} multiline={true}  
-            style={{height: Math.max(35, height),fontSize:20}} onContentSizeChange={(event) =>
+            <TextInput onChangeText={myText}  placeholder = "Send your message here..." multiline={true}  
+            style={{height: Math.max(35, height),fontSize:15}} onContentSizeChange={(event) =>
         setHeight(event.nativeEvent.contentSize.height) 
       } />
         </View>
@@ -34,27 +46,7 @@ export default function Texting(){
         <View style={styles.chatFlex}>
         <ScrollView>
             <View onStartShouldSetResponder={() => true}>
-            
-            {/* Chat Right Bubble */}
-            <View style={styles.chatRight}>
-                <Text>
-                    Chat Right
-                </Text>
-            </View>
-            <View style={styles.chatRight}>
-                <Text>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-                    Dolorem beatae dignissimos laboriosam iusto, maxime nesciunt alias quaerat minus, assumenda, suscipit itaque natus unde?
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-                    Dolorem beatae dignissimos laboriosam iusto, maxime nesciunt alias quaerat minus, assumenda, suscipit itaque natus unde?
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-                    Dolorem beatae dignissimos laboriosam iusto, maxime nesciunt alias quaerat minus, assumenda, suscipit itaque natus unde?
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-                    Dolorem beatae dignissimos laboriosam iusto, maxime nesciunt alias quaerat minus, assumenda, suscipit itaque natus unde?
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-                    Dolorem beatae dignissimos laboriosam iusto, maxime nesciunt alias quaerat minus, assumenda, suscipit itaque natus unde?
-                </Text>
-            </View>
+          
             </View>
             </ScrollView>
         </View>
@@ -82,19 +74,21 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginTop: "auto",
         backgroundColor: "crimson",
-        borderRadius: 25,
+        borderRadius: 15,
         paddingLeft: 20,
+        paddingRight:10,
+        paddingTop:5,
         width: "85%",
         marginLeft:5,
         flexDirection: "row",
         justifyContent: "space-between",
         flexWrap: "nowrap",
-        zIndex:1
+        zIndex:1,
     },
     bigFlex:{
         borderWidth: 1,
         width:"100%",
-        height: "100%",
+        height: "94.5%",
     },
     chatFlex:{
         borderWidth: 1,
@@ -103,19 +97,14 @@ const styles = StyleSheet.create({
         height: "92.5%",
         position: "absolute", top:0,
     },
-    chatRight:{
-        borderRadius: 10,
-        backgroundColor: "darkseagreen",
-        maxWidth: "65%",
-        flexWrap: "nowrap",
-        margin: 10,
-        padding: 10,
-        alignSelf: "flex-end"
-    },
     sendImgStyle:{
       width:25,
       height:25,
       marginLeft:5
+    },
+    backButton:{
+        backgroundColor: "pink",
+        width:"20%",
+        height:"5%"
     }
-
 })

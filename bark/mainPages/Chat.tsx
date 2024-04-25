@@ -1,11 +1,17 @@
+import { useState } from "react";
 import { View, Text, Pressable, Image, StyleSheet } from "react-native";
+import Texting from "./Texting";
 const dogImg = require("../assets/silly dog.png");
 
 export default function Chat() {
+  const [chat, setChat] = useState<boolean>(false);
   return (
+    chat ? (
+      <Texting setChat = {setChat} />
+    ): 
     <View>
       {/* Pressable for the chat feature. */}
-      <Pressable style={styles.chatContainer}>
+      <Pressable style={styles.chatContainer} onPress={() => setChat(true)}>
         {/* Profile Picture */}
         <View style={styles.pfpContainer}>
           <Image style={styles.pfpStyle} source={dogImg}></Image>
