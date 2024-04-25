@@ -1,6 +1,6 @@
 import {useState} from 'react';
-import {View, Text, StyleSheet, TextInput, Pressable, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView} from 'react-native'
-
+import {View, Text, StyleSheet, TextInput, Pressable, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView, Image} from 'react-native'
+const sendImg = require("../assets/send button.png");
 
 export default function Texting(){
     const [text, onChangeText] = useState('')
@@ -22,16 +22,14 @@ export default function Texting(){
             style={{height: Math.max(35, height),fontSize:20}} onContentSizeChange={(event) =>
         setHeight(event.nativeEvent.contentSize.height) 
       } />
-        {/* Send button */}
-        <View style={styles.sendContainer}>
+        </View>
+      {/* Send button */}
+      <View style={styles.sendContainer}>
             <Pressable>
-                <Text>
-                    Send
-                </Text>
+              <Image style={styles.sendImgStyle} source={sendImg}>
+              </Image>
             </Pressable>
         </View>
-        </View>
-
 
 
         <View style={styles.chatFlex}>
@@ -72,11 +70,12 @@ const styles = StyleSheet.create({
     sendContainer:{
         backgroundColor: "blue",
         borderRadius: 100,
-        width: 75,
+        width:40,
+        height:40,
         alignItems: "center",
         justifyContent: "center",
-        height: 37,
-        position: "absolute", right:0
+        position: "absolute", right:0, bottom:0,
+        marginRight: 7
     },
     textingBox: {
         borderColor: "red",
@@ -85,11 +84,12 @@ const styles = StyleSheet.create({
         backgroundColor: "crimson",
         borderRadius: 25,
         paddingLeft: 20,
-        width: "90%",
-        marginLeft:20,
+        width: "85%",
+        marginLeft:5,
         flexDirection: "row",
         justifyContent: "space-between",
-        flexWrap: "nowrap"
+        flexWrap: "nowrap",
+        zIndex:1
     },
     bigFlex:{
         borderWidth: 1,
@@ -119,6 +119,11 @@ const styles = StyleSheet.create({
         margin: 10,
         padding: 10,
         alignSelf: "flex-end"
+    },
+    sendImgStyle:{
+      width:25,
+      height:25,
+      marginLeft:5
     }
 
 })
