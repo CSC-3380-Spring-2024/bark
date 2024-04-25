@@ -31,30 +31,30 @@ export default function Texting(){
             </Pressable>
         </View>
 
-
         <View style={styles.chatFlex}>
-            <ScrollView>
-            {/* Chat Left Bubble */}
-            <View style={styles.chatLeft}>
-            <Text>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Beatae totam culpa blanditiis atque itaque ullam quisquam, aliquam optio esse nulla.
-            </Text>
-            </View>
+        <ScrollView>
+            <View onStartShouldSetResponder={() => true}>
+            
             {/* Chat Right Bubble */}
             <View style={styles.chatRight}>
                 <Text>
                     Chat Right
                 </Text>
             </View>
-            <View style={styles.chatLeft}>
-            <Text>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, veniam accusantium. Aspernatur.
-            </Text>
-            </View>
             <View style={styles.chatRight}>
                 <Text>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem beatae dignissimos laboriosam iusto, maxime nesciunt alias quaerat minus, assumenda, suscipit itaque natus unde?
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+                    Dolorem beatae dignissimos laboriosam iusto, maxime nesciunt alias quaerat minus, assumenda, suscipit itaque natus unde?
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+                    Dolorem beatae dignissimos laboriosam iusto, maxime nesciunt alias quaerat minus, assumenda, suscipit itaque natus unde?
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+                    Dolorem beatae dignissimos laboriosam iusto, maxime nesciunt alias quaerat minus, assumenda, suscipit itaque natus unde?
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+                    Dolorem beatae dignissimos laboriosam iusto, maxime nesciunt alias quaerat minus, assumenda, suscipit itaque natus unde?
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+                    Dolorem beatae dignissimos laboriosam iusto, maxime nesciunt alias quaerat minus, assumenda, suscipit itaque natus unde?
                 </Text>
+            </View>
             </View>
             </ScrollView>
         </View>
@@ -102,14 +102,6 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "92.5%",
         position: "absolute", top:0,
-    },
-    chatLeft:{
-        borderRadius: 10,
-        backgroundColor: "darkkhaki",
-        maxWidth:"65%",
-        flexWrap: "nowrap",
-        margin: 10,
-        padding: 10
     },
     chatRight:{
         borderRadius: 10,
