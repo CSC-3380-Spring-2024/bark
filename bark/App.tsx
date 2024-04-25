@@ -1,13 +1,28 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
 
 
+
+import generateProfiles from "./components/generateProfiles"
 import Navbar from './mainPages/Navbar'
+import LandingPage from './mainPages/LandingPage';
+
+
 export default function App() {
+  const [loggedIn, setLoginStatus] = useState<boolean>(false);
+
+  
+
+
   return (
+    <>
+    {loggedIn ? 
     <NavigationContainer>
       <Navbar />
     </NavigationContainer>
+    :<LandingPage setLoginStatus = {setLoginStatus}/>}
+    </>
   );
 }
 
