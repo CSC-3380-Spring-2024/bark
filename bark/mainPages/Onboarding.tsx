@@ -232,7 +232,6 @@ const styles = StyleSheet.create({
     height: 160,
     fontSize: 15,
     padding: 10,
-    backgroundColor: "white"
   },
 });
 
