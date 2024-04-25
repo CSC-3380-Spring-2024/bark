@@ -9,6 +9,7 @@ import {
   Text,
   ScrollView,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
 import {
@@ -47,6 +48,7 @@ export default function LandingPage(props: {
       props.setLoginStatus(true);
     } catch (error) {
       console.log(error);
+      Alert.alert("Username or Password is incorrect");
     } finally {
       setLoading(false);
     }
@@ -70,6 +72,10 @@ export default function LandingPage(props: {
       console.log(response);
     } catch (error) {
       console.log(error);
+      Alert.alert(
+        "This email is already being used by another account",
+        "Try logging in instead or using another email"
+      );
     } finally {
       setLoading(false);
     }
