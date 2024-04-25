@@ -278,13 +278,13 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     backgroundColor: "transparent",
-    marginLeft: 8
+    marginLeft: 8,
   },
-  logo:{
+  logo: {
     width: 70,
     height: 70,
     alignSelf: "center",
-    marginTop: 80,
-    marginLeft: -15
-  }
+    position: "absolute",
+    bottom: 0,
+  },
 });
