@@ -11,7 +11,7 @@ import {
   Pressable,
 } from "react-native";
 
-import DogLogo from '../assets/barkLogo.png';
+import DogLogo from "../assets/barkLogo.png";
 
 import {
   FIREBASE_DATABASE,
@@ -35,23 +35,6 @@ export default function Profile() {
   const [image2, setImage2] = useState<string>();
   const [image3, setImage3] = useState<string>();
   const [image4, setImage4] = useState<string>();
-  const [tags, setTags] = useState<boolean[]>([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
   const [editProf, editingProf] = useState<boolean>(false);
   const [settings, goToSettings] = useState<boolean>(false);
 
@@ -64,16 +47,18 @@ export default function Profile() {
   );
 
   //PULL USER DATA FROM DATABASE
-  get(userRef).then((snapshot) => {
-    if (snapshot.exists()) {
-      setName(snapshot.val().name);
-      setBio(snapshot.val().bio);
-      setPronouns(snapshot.val().pronouns);
-      setDogName(snapshot.val().dogName);
-      setTags(useMemo(() => snapshot.val().tags, []));
-    } else {
-    }
-  });
+  get(userRef)
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        setName(snapshot.val().name);
+        setBio(snapshot.val().bio);
+        setPronouns(snapshot.val().pronouns);
+        setDogName(snapshot.val().dogName);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
   function setRightImage(uri: string, index: number) {
     switch (index) {
@@ -122,6 +107,7 @@ export default function Profile() {
   return editProf ? (
     <Onboarding
       editingProf={editingProf}
+      signingUp={() => {}}
       editProf={editProf}
       nameProp={name}
       dogNameProp={dogName}
@@ -130,10 +116,14 @@ export default function Profile() {
   ) : settings ? (
     <Settings goToSettings={goToSettings} />
   ) : (
-    <ScrollView style={styles.mainContainer} bounces={false}>
-      <View style={{ flexGrow: 1, marginHorizontal: "3%" }}>
+    <View style={styles.mainContainer}>
+      <View style={{ marginHorizontal: "3%" }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={styles.dogName}>{dogName}</Text>
+          <Text style={styles.dogName}>
+            {dogName}
+            <Text style={styles.ownerName}> with {name}</Text>
+          </Text>
+
           <View style={{ flexDirection: "row" }}>
             <Pressable style={styles.button} onPress={() => editingProf(true)}>
               <Image
@@ -153,14 +143,13 @@ export default function Profile() {
         {/* {pronouns && <Text style={styles.dognouns}>{pronouns} </Text>} */}
         <View
           style={{
-            flex: 1,
             height: 2,
             backgroundColor: "black",
             marginBottom: 10,
           }}
         />
       </View>
-      <View style={{ flexGrow: 1 }}>
+      <View style={{}}>
         <ScrollView horizontal={true}>
           {image0 && <Image style={styles.image} source={{ uri: image0 }} />}
           {image1 && <Image style={styles.image} source={{ uri: image1 }} />}
@@ -191,20 +180,21 @@ export default function Profile() {
             marginBottom: "3%",
           }}
         />
-        <View style={{flexDirection:"row", justifyContent:"center"}}>
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Text style={styles.ownerName}>Owner: </Text>
           <Text style={styles.ownerName}>{name}</Text>
         </View>
-        <Image source={DogLogo} style={styles.logo} />
       </View>
-
-
-    </ScrollView>
+      <Image source={DogLogo} style={styles.logo} />
+    </View>
   );
 }
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: "#f0eada",
+    backgroundColor: "#EADDCA",
+    position: "absolute",
+    bottom: 0,
+    top: 0,
   },
   dogName: {
     fontSize: 25,
@@ -225,7 +215,7 @@ const styles = StyleSheet.create({
     color: "black",
     marginVertical: 0,
     marginHorizontal: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   dognouns: {
     fontSize: 15,
