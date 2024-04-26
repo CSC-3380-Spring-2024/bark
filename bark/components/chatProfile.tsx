@@ -1,7 +1,10 @@
 import { View, Pressable, Image, StyleSheet, Text } from "react-native";
 import { get, ref } from "firebase/database";
-import { FIREBASE_DATABASE } from "../FirebaseConfig";
+import { getDownloadURL, ref as storageRef } from "@firebase/storage";
+import { FIREBASE_DATABASE, FIREBASE_STORAGE } from "../FirebaseConfig";
 import { useState } from "react";
+import Texting from "../mainPages/Texting";
+import { createStackNavigator } from "@react-navigation/stack";
 export default function ChatProfile({ uid }: { uid: string }) {
   const [name, setName] = useState<string>("");
   const [recentMessage, setRecentMessage] = useState<string>("");
@@ -11,13 +14,21 @@ export default function ChatProfile({ uid }: { uid: string }) {
       setName(snapshot.val().name);
     }
   });
+  getDownloadURL(storageRef(FIREBASE_STORAGE, `images/${uid}/profileImage0`))
+    .then((promise) => {
+      setImg(promise);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
   return (
     <View>
       {/* Pressable for the chat feature. */}
       <Pressable style={styles.chatContainer} onPress={() => {}}>
         {/* Profile Picture */}
         <View style={styles.pfpContainer}>
-          <Image style={styles.pfpStyle}></Image>
+          <Image style={styles.pfpStyle} source={{ uri: img }}></Image>
         </View>
         <View style={styles.textFlex}>
           {/* Username */}
