@@ -4,6 +4,7 @@ import Home from "./Home";
 import Profile from "./Profile";
 import Chat from "./Chat";
 import Other from "./Other";
+
 import LandingPage from "./LandingPage";
 import Onboarding from "./Onboarding";
 import { FontAwesome } from "@expo/vector-icons";
