@@ -7,11 +7,13 @@ import Texting from "../mainPages/Texting";
 import { createStackNavigator } from "@react-navigation/stack";
 export default function ChatProfile({ uid }: { uid: string }) {
   const [name, setName] = useState<string>("");
+  const [dogName, setDogName] = useState<string>("");
   const [recentMessage, setRecentMessage] = useState<string>("");
   const [img, setImg] = useState<string>("");
   get(ref(FIREBASE_DATABASE, `users/${uid}`)).then((snapshot) => {
     if (snapshot.exists()) {
       setName(snapshot.val().name);
+      setDogName(snapshot.val().dogName);
     }
   });
   getDownloadURL(storageRef(FIREBASE_STORAGE, `images/${uid}/profileImage0`))
@@ -33,7 +35,9 @@ export default function ChatProfile({ uid }: { uid: string }) {
         <View style={styles.textFlex}>
           {/* Username */}
           <View>
-            <Text style={styles.usernameText}>{name}</Text>
+            <Text style={styles.usernameText}>
+              {dogName} <Text style={styles.ownerName}>with {name}</Text>
+            </Text>
           </View>
           {/* Last message sent */}
           <View>
@@ -49,6 +53,13 @@ const styles = StyleSheet.create({
   chatContainer: {
     flexDirection: "row",
     padding: 10,
+    borderBottomWidth: 1,
+  },
+  ownerName: {
+    fontSize: 16,
+    color: "black",
+    alignSelf: "center",
+    fontWeight: "bold",
   },
   pfpContainer: {
     overflow: "hidden",
