@@ -89,7 +89,6 @@ export default function GeneratedProf({
         await getDownloadURL(imgRef)
           .then((response) => {
             setRightImage(response, i);
-            console.log(response);
           })
           .catch((error) => {
             setRightImage("", i);

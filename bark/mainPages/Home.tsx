@@ -128,14 +128,14 @@ export default function Home() {
 
   return (
     <>
-      {profiles.length > 0 && (
+      {profiles.length > 0 && profiles.length > currentProf && (
         <GeneratedProf
           uuid={profiles[currentProf]}
           deny={deny}
           accept={accept}
         />
       )}
-      {profiles.length == 0 && <Text>No profiles avalible</Text>}
+      {profiles.length <= currentProf && <Text>No profiles avalible</Text>}
     </>
   );
 }
