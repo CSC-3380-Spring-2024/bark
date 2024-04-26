@@ -1,60 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, Pressable, Image, StyleSheet } from "react-native";
 import Texting from "./Texting";
+import ChatProfile from "../components/chatProfile";
+import { get, ref } from "@firebase/database";
+import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
 const dogImg = require("../assets/silly dog.png");
 
 export default function Chat() {
   const [chat, setChat] = useState<boolean>(false);
+  const [matches, setMatches] = useState<string[]>([]);
+
+  async function createChats() {
+    const snapshot = await get(
+      ref(FIREBASE_DATABASE, `users/${FIREBASE_AUTH.currentUser?.uid}/chats`)
+    );
+    const uids = snapshot.val();
+    console.log(uids);
+
+    const otherUserChatIDs = Object.keys(uids).filter((chatID) => {
+      const [uid1, uid2] = chatID.split(".");
+      return uid1 !== FIREBASE_AUTH.currentUser?.uid
+        ? uid1
+        : uid2 !== FIREBASE_AUTH.currentUser?.uid;
+    });
+    setMatches(otherUserChatIDs);
+  }
+
+  useEffect(() => {
+    createChats();
+  }, []);
   return (
-    chat ? (
-      <Texting setChat = {setChat} />
-    ): 
-    <View>
-      {/* Pressable for the chat feature. */}
-      <Pressable style={styles.chatContainer} onPress={() => setChat(true)}>
-        {/* Profile Picture */}
-        <View style={styles.pfpContainer}>
-          <Image style={styles.pfpStyle} source={dogImg}></Image>
-        </View>
-        <View style={styles.textFlex}>
-          {/* Username */}
-          <View>
-            <Text style={styles.usernameText}>Username</Text>
-          </View>
-          {/* Last message sent */}
-          <View>
-            <Text style={styles.textFontStyle}>Recent message</Text>
-          </View>
-        </View>
-      </Pressable>
-    </View>
+    <>
+      {matches.map((value) => {
+        console.log(value);
+        return <ChatProfile uid={value} />;
+      })}
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  chatContainer: {
-    flexDirection: "row",
-    padding: 10,
-  },
-  pfpContainer: {
-    overflow: "hidden",
-    borderRadius: 100,
-    width: 75,
-    height: 75,
-  },
-  textFlex: {
-    flexDirection: "column",
-    paddingLeft: 10,
-    width: "100%",
-  },
-  pfpStyle: {
-    borderRadius: 100,
-    width: 75,
-    height: 75,
-  },
-  textFontStyle: {},
-  usernameText: {
-    fontWeight: "bold",
-    fontSize: 25,
-  },
-});
