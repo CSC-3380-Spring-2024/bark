@@ -24,4 +24,4 @@ To start the project with Expo, follow these steps:
 - Scan the QR code displayed in the terminal, Or open it within your favorite mobile simulator
 
 
-If u want access to firebase to see the backend working, email rferre5@lsu.edu for access
+If you would like access to firebase to see our backend working, please email rferre5@lsu.edu for access.
