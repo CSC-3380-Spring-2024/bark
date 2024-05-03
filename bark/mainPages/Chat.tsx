@@ -29,7 +29,8 @@ export default function Chat({ navigation }: { navigation: any }) {
     }
     const otherUserChatIDs: string[] = [];
     uids.forEach((value) => {
-      const [uid1, uid2] = value.split(".");
+      const uid1 = value.substring(0, 28);
+      const uid2 = value.substring(28, 56);
       if (uid1 !== FIREBASE_AUTH.currentUser?.uid) {
         otherUserChatIDs.push(uid1);
       } else {
