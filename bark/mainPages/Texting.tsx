@@ -65,6 +65,7 @@ export default function Texting(props: {
       <View
         style={{
           backgroundColor: "#EADDCA",
+          height: "6%",
         }}
       >
         <Pressable
@@ -168,14 +169,12 @@ const styles = StyleSheet.create({
   },
   bigFlex: {
     width: "100%",
-    height: "96.1%",
+    height: "96%",
     backgroundColor: "#EADDCA",
   },
   chatFlex: {
     width: "100%",
     height: "94%",
-    position: "absolute",
-    top: 0,
   },
   sendImgStyle: {
     width: 25,
