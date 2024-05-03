@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
   chatFlex: {
     width: "100%",
-    height: "90%",
+    height: "94%",
     position: "absolute",
     top: 0,
   },
