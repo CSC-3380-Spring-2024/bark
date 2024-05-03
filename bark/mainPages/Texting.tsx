@@ -12,11 +12,45 @@ import {
   Image,
 } from "react-native";
 import ChatBubbleLeft from "./ChatBubbleLeft";
+import { onValue, ref, push } from "@firebase/database";
+import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
+import ChatBubbleRight from "./ChatBubbleRight";
 const sendImg = require("../assets/send button.png");
-
-export default function Texting({ chatID }: { chatID: string }) {
+export default function Texting(props: { chatID: string }) {
   const [height, setHeight] = useState(0);
   const [send, myText] = useState<string>();
+  const [messages, setMessages] = useState<string[]>([]);
+  const messageRef = ref(FIREBASE_DATABASE, `/chats/${props.chatID}/messages`);
+
+  const sideFunc = () => {
+    const first = props.chatID.substring(0, 28);
+    const second = props.chatID.substring(28, 56);
+    if (first === FIREBASE_AUTH.currentUser?.uid) {
+      return "0";
+    } else if (second === FIREBASE_AUTH.currentUser?.uid) {
+      return "1";
+    } else {
+      return "0";
+    }
+  };
+  const side = sideFunc();
+  onValue(messageRef, (snapshot) => {
+    const values = snapshot.val();
+    const newMessages = Object.values(values).filter(
+      (message) => typeof message === "string"
+    ) as string[];
+
+    // Only update messages if the new array is different
+    if (JSON.stringify(messages) !== JSON.stringify(newMessages)) {
+      setMessages(newMessages);
+    }
+  });
+
+  const messageSender = async () => {
+    push(messageRef, `${side}` + send);
+    myText("");
+  };
+
   return (
     <View>
       <Pressable>
@@ -27,6 +61,18 @@ export default function Texting({ chatID }: { chatID: string }) {
         {/* Makes the keyboard vanish when tapping somewhere else */}
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.bigFlex}>
+            {messages.map((message, index) => {
+              if (message.startsWith(side)) {
+                return (
+                  <ChatBubbleRight key={index} message={message.slice(1)} />
+                );
+              } else {
+                return (
+                  <ChatBubbleLeft key={index} message={message.slice(1)} />
+                );
+              }
+            })}
+
             {/* Everything in the texting box */}
             <View style={styles.textingBox}>
               <TextInput
@@ -41,7 +87,7 @@ export default function Texting({ chatID }: { chatID: string }) {
             </View>
             {/* Send button */}
             <View style={styles.sendContainer}>
-              <Pressable>
+              <Pressable onPress={messageSender}>
                 <Image style={styles.sendImgStyle} source={sendImg}></Image>
               </Pressable>
             </View>

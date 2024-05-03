@@ -95,6 +95,7 @@ export default function Home() {
       console.log("Pushing 2 firebase:D");
       push(ref(FIREBASE_DATABASE, `users/${currentUser}/chats`), chatId);
       push(ref(FIREBASE_DATABASE, `users/${likedProfile}/chats`), chatId);
+      push(ref(FIREBASE_DATABASE, `chats/${chatId}/messages`), "dummy value");
     }
 
     let i = currentProf;
@@ -106,7 +107,7 @@ export default function Home() {
   };
 
   function generateChatId(uid1: string, uid2: string) {
-    return `${uid1}.${uid2}`;
+    return `${uid1}${uid2}`;
   }
   function deny() {
     console.log("denied");
