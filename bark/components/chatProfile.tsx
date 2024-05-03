@@ -5,6 +5,7 @@ import { FIREBASE_DATABASE, FIREBASE_STORAGE } from "../FirebaseConfig";
 import { useState } from "react";
 import Texting from "../mainPages/Texting";
 import { createStackNavigator } from "@react-navigation/stack";
+import { ScrollView } from "react-native-gesture-handler";
 export default function ChatProfile({ uid }: { uid: string }) {
   const [name, setName] = useState<string>("");
   const [dogName, setDogName] = useState<string>("");
@@ -25,27 +26,27 @@ export default function ChatProfile({ uid }: { uid: string }) {
     });
 
   return (
-    <View>
-      {/* Pressable for the chat feature. */}
-      <Pressable style={styles.chatContainer} onPress={() => {}}>
-        {/* Profile Picture */}
-        <View style={styles.pfpContainer}>
-          <Image style={styles.pfpStyle} source={{ uri: img }}></Image>
-        </View>
-        <View style={styles.textFlex}>
-          {/* Username */}
-          <View>
-            <Text style={styles.usernameText}>
-              {dogName} <Text style={styles.ownerName}>with {name}</Text>
-            </Text>
+      <View>
+        {/* Pressable for the chat feature. */}
+        <Pressable style={styles.chatContainer} onPress={() => {}}>
+          {/* Profile Picture */}
+          <View style={styles.pfpContainer}>
+            <Image style={styles.pfpStyle} source={{ uri: img }}></Image>
           </View>
-          {/* Last message sent */}
-          <View>
-            <Text style={styles.textFontStyle}>Recent message</Text>
+          <View style={styles.textFlex}>
+            {/* Username */}
+            <View>
+              <Text style={styles.usernameText}>
+                {dogName} <Text style={styles.ownerName}>with {name}</Text>
+              </Text>
+            </View>
+            {/* Last message sent */}
+            <View>
+              <Text style={styles.textFontStyle}>Recent message</Text>
+            </View>
           </View>
-        </View>
-      </Pressable>
-    </View>
+        </Pressable>
+      </View>
   );
 }
 

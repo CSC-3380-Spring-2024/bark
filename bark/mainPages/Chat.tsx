@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { View, Text, Pressable, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  Image,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import Texting from "./Texting";
 import ChatProfile from "../components/chatProfile";
 import { get, ref } from "@firebase/database";
@@ -45,9 +52,16 @@ export default function Chat({ navigation }: { navigation: any }) {
   }, []);
   return (
     <>
-      {matches.map((value) => {
-        return <ChatProfile uid={value} />;
-      })}
+      <ScrollView style={styles.backgroundColor}>
+        {matches.map((value) => {
+          return <ChatProfile uid={value} />;
+        })}
+      </ScrollView>
     </>
   );
 }
+const styles = StyleSheet.create({
+  backgroundColor: {
+    backgroundColor: "#EADDCA",
+  },
+});
