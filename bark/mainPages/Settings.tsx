@@ -14,6 +14,9 @@ import {
   updatePassword,
   verifyBeforeUpdateEmail,
   reauthenticateWithCredential,
+  EmailAuthProvider,
+  reauthenticateWithPopup,
+  AuthCredential,
 } from "firebase/auth";
 import { ref, set } from "@firebase/database";
 import { useState } from "react";
@@ -23,6 +26,7 @@ export default function Settings(props: {
 }) {
   const user = FIREBASE_AUTH.currentUser;
   const [email, changeEmail] = useState<string>(user?.email as string);
+  const [password, passUpdate] = useState<string>("");
 
   function signOut() {
     FIREBASE_AUTH.signOut()
@@ -44,7 +48,16 @@ export default function Settings(props: {
   const updateEmail = async () => {
     if (email !== "" && user) {
       try {
-        const response = await verifyBeforeUpdateEmail(user, email);
+        const credential = EmailAuthProvider.credential(
+          user.email as string,
+          password
+        );
+        const response = await reauthenticateWithCredential(
+          user,
+          credential
+        ).then(() => {
+          verifyBeforeUpdateEmail(user, email);
+        });
         console.log(response);
         Alert.alert(
           "Check your email for a verification message",
@@ -78,13 +91,18 @@ export default function Settings(props: {
           style={styles.textInputs}
           placeholder=" Type NEW email here"
           onChangeText={changeEmail}
-          defaultValue={email}
+          //defaultValue={email}
+        ></TextInput>
+        <TextInput
+          style={styles.textInputs}
+          placeholder=" Type CURRENT password here"
+          onChangeText={passUpdate}
         ></TextInput>
         {/* Email verification button */}
         <Pressable onPress={() => updateEmail()} style={styles.button}>
           <Text style={styles.buttonText}> Send verification email </Text>
         </Pressable>
-        <View style={{ marginVertical: "3%" }}></View>
+        <View style={{ marginVertical: "5%" }}></View>
         {/* Update Password button */}
         <Pressable onPress={() => updatePswd()} style={styles.button}>
           <Text style={styles.buttonText}> Update Password </Text>
@@ -136,7 +154,7 @@ const styles = StyleSheet.create({
     borderWidth: 2.5,
     borderColor: "red",
     marginVertical: "2%",
-    marginTop: "100%",
+    marginTop: "80%",
     //justifyContent: "flex-start",
   },
   signOutButtonText: {
@@ -159,5 +177,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: "bold",
+    marginTop: "5%",
   },
 });
