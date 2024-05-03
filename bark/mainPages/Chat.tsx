@@ -16,7 +16,9 @@ const dogImg = require("../assets/silly dog.png");
 
 export default function Chat({ navigation }: { navigation: any }) {
   const [chat, setChat] = useState<boolean>(false);
+  const [chatId, setChatId] = useState<string>("");
   const [matches, setMatches] = useState<string[]>([]);
+  const [chatIds, setChatIds] = useState<string[]>([]);
   const Stack = createStackNavigator();
   async function createChats() {
     const snapshot = await get(
@@ -34,6 +36,7 @@ export default function Chat({ navigation }: { navigation: any }) {
         }
       }
     }
+    setChatIds(uids);
     const otherUserChatIDs: string[] = [];
     uids.forEach((value) => {
       const uid1 = value.substring(0, 28);
@@ -53,9 +56,13 @@ export default function Chat({ navigation }: { navigation: any }) {
   return (
     <>
       <ScrollView style={styles.backgroundColor}>
-        {matches.map((value) => {
-          return <ChatProfile uid={value} />;
-        })}
+        {chatId === "" ? (
+          chatIds.map((match) => (
+            <ChatProfile uid={match} chatSetter={setChatId} />
+          ))
+        ) : (
+          <Texting chatID={chatId} chatSetter={setChatId} />
+        )}
       </ScrollView>
     </>
   );

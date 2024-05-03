@@ -16,7 +16,10 @@ import { onValue, ref, push } from "@firebase/database";
 import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
 import ChatBubbleRight from "./ChatBubbleRight";
 const sendImg = require("../assets/send button.png");
-export default function Texting(props: { chatID: string }) {
+export default function Texting(props: {
+  chatID: string;
+  chatSetter: Function;
+}) {
   const [height, setHeight] = useState(0);
   const [send, myText] = useState<string>();
   const [messages, setMessages] = useState<string[]>([]);
@@ -35,11 +38,14 @@ export default function Texting(props: { chatID: string }) {
   };
   const side = sideFunc();
   onValue(messageRef, (snapshot) => {
+    console.log("Im here1");
     const values = snapshot.val();
-    const newMessages = Object.values(values).filter(
-      (message) => typeof message === "string"
-    ) as string[];
+    console.log(props.chatID);
 
+    const newMessages: string[] = Object.values(values).filter((message) => {
+      console.log(message);
+      return typeof message === "string";
+    }) as string[];
     // Only update messages if the new array is different
     if (JSON.stringify(messages) !== JSON.stringify(newMessages)) {
       setMessages(newMessages);
@@ -53,7 +59,11 @@ export default function Texting(props: { chatID: string }) {
 
   return (
     <View>
-      <Pressable>
+      <Pressable
+        onPress={() => {
+          props.chatSetter("");
+        }}
+      >
         <Text style={{ fontSize: 50 }}>Back</Text>
       </Pressable>
       {/* Makes the keyboard go above the text you are sending */}
