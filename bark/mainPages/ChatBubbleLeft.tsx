@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     backgroundColor: "darkkhaki",
     maxWidth: "65%",
     flexWrap: "nowrap",
+    alignSelf: "flex-start",
     margin: 10,
     padding: 10,
   },

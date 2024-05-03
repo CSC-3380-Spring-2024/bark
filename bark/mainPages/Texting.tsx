@@ -80,6 +80,7 @@ export default function Texting(props: {
               borderWidth: 3,
               borderRadius: 10,
               borderColor: "#895C3E",
+              color: "#895C3E",
             }}
           >
             {"<"} Back
@@ -92,7 +93,12 @@ export default function Texting(props: {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.bigFlex}>
             <View style={styles.chatFlex}>
-              <ScrollView>
+              <ScrollView
+                ref={(ref) => (this.scrollView = ref)}
+                onContentSizeChange={(contentWidth, contentHeight) => {
+                  this.scrollView.scrollToEnd({ animated: true });
+                }}
+              >
                 <View onStartShouldSetResponder={() => true}>
                   {messages.map((message, index) => {
                     if (message.startsWith(side)) {
