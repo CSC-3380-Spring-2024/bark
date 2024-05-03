@@ -55,15 +55,15 @@ export default function Chat({ navigation }: { navigation: any }) {
   }, []);
   return (
     <>
-      <ScrollView style={styles.backgroundColor}>
-        {chatId === "" ? (
-          chatIds.map((match) => (
+      {chatId === "" ? (
+        <ScrollView style={styles.backgroundColor}>
+          {chatIds.map((match) => (
             <ChatProfile uid={match} chatSetter={setChatId} />
-          ))
-        ) : (
-          <Texting chatID={chatId} chatSetter={setChatId} />
-        )}
-      </ScrollView>
+          ))}
+        </ScrollView>
+      ) : (
+        <Texting chatID={chatId} chatSetter={setChatId} />
+      )}
     </>
   );
 }

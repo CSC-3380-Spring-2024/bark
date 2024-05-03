@@ -59,29 +59,57 @@ export default function Texting(props: {
 
   return (
     <View>
-      <Pressable
-        onPress={() => {
-          props.chatSetter("");
+      <View
+        style={{
+          backgroundColor: "#EADDCA",
         }}
       >
-        <Text style={{ fontSize: 50 }}>Back</Text>
-      </Pressable>
+        <Pressable
+          onPress={() => {
+            props.chatSetter("");
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 30,
+              width: "30%",
+              borderWidth: 3,
+              borderRadius: 10,
+              borderColor: "#895C3E",
+            }}
+          >
+            {"<"} Back
+          </Text>
+        </Pressable>
+      </View>
       {/* Makes the keyboard go above the text you are sending */}
       <KeyboardAvoidingView behavior={"height"} keyboardVerticalOffset={90}>
         {/* Makes the keyboard vanish when tapping somewhere else */}
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.bigFlex}>
-            {messages.map((message, index) => {
-              if (message.startsWith(side)) {
-                return (
-                  <ChatBubbleRight key={index} message={message.slice(1)} />
-                );
-              } else {
-                return (
-                  <ChatBubbleLeft key={index} message={message.slice(1)} />
-                );
-              }
-            })}
+            <View style={styles.chatFlex}>
+              <ScrollView>
+                <View onStartShouldSetResponder={() => true}>
+                  {messages.map((message, index) => {
+                    if (message.startsWith(side)) {
+                      return (
+                        <ChatBubbleRight
+                          key={index}
+                          message={message.slice(1)}
+                        />
+                      );
+                    } else {
+                      return (
+                        <ChatBubbleLeft
+                          key={index}
+                          message={message.slice(1)}
+                        />
+                      );
+                    }
+                  })}
+                </View>
+              </ScrollView>
+            </View>
 
             {/* Everything in the texting box */}
             <View style={styles.textingBox}>
@@ -101,12 +129,6 @@ export default function Texting(props: {
                 <Image style={styles.sendImgStyle} source={sendImg}></Image>
               </Pressable>
             </View>
-
-            <View style={styles.chatFlex}>
-              <ScrollView>
-                <View onStartShouldSetResponder={() => true}></View>
-              </ScrollView>
-            </View>
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
@@ -116,7 +138,7 @@ export default function Texting(props: {
 
 const styles = StyleSheet.create({
   sendContainer: {
-    backgroundColor: "blue",
+    backgroundColor: "#895C3E",
     borderRadius: 100,
     width: 40,
     height: 40,
@@ -128,10 +150,8 @@ const styles = StyleSheet.create({
     marginRight: 7,
   },
   textingBox: {
-    borderColor: "red",
-    borderWidth: 1,
     marginTop: "auto",
-    backgroundColor: "crimson",
+    backgroundColor: "#895C3E",
     borderRadius: 15,
     paddingLeft: 20,
     paddingRight: 10,
@@ -144,15 +164,13 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   bigFlex: {
-    borderWidth: 1,
     width: "100%",
-    height: "94.5%",
+    height: "96.1%",
+    backgroundColor: "#EADDCA",
   },
   chatFlex: {
-    borderWidth: 1,
-    borderColor: "pink",
     width: "100%",
-    height: "92.5%",
+    height: "90%",
     position: "absolute",
     top: 0,
   },
@@ -162,7 +180,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   backButton: {
-    backgroundColor: "pink",
     width: "20%",
     height: "5%",
   },
