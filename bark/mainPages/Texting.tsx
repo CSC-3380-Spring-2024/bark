@@ -46,14 +46,17 @@ export default function Texting(props: {
       console.log(message);
       return typeof message === "string";
     }) as string[];
+    const newMessagesRemoved = newMessages.slice(1);
     // Only update messages if the new array is different
-    if (JSON.stringify(messages) !== JSON.stringify(newMessages)) {
-      setMessages(newMessages);
+    if (JSON.stringify(messages) !== JSON.stringify(newMessagesRemoved)) {
+      setMessages(newMessagesRemoved);
     }
   });
 
   const messageSender = async () => {
-    push(messageRef, `${side}` + send);
+    if (send != "") {
+      push(messageRef, `${side}` + send);
+    }
     myText("");
   };
 
