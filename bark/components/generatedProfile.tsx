@@ -19,7 +19,6 @@ import {
   FIREBASE_DATABASE,
   FIREBASE_STORAGE,
 } from "../FirebaseConfig";
-import dogBoneImage from "../assets/bone-2.png";
 
 const dimensions = Dimensions.get("window");
 

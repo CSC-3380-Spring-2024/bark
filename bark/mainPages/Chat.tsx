@@ -36,6 +36,7 @@ export default function Chat({ navigation }: { navigation: any }) {
         otherUserChatIDs.push(uid2);
       }
     });
+    console.log(otherUserChatIDs);
     setMatches(otherUserChatIDs);
   }
 

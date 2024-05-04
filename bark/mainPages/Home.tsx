@@ -92,16 +92,19 @@ export default function Home() {
     console.log(currentUser && otherUserLikes.includes(currentUser));
     if (currentUser && otherUserLikes.includes(currentUser)) {
       const chatId = generateChatId(currentUser, likedProfile);
+      Alert.alert("Match found!","Start a chat with them on the chat screen!")
       console.log("Pushing 2 firebase:D");
-      push(ref(FIREBASE_DATABASE, `users/${currentUser}/chats`), chatId);
+      pusIh(ref(FIREBASE_DATABASE, `users/${currentUser}/chats`), chatId);
       push(ref(FIREBASE_DATABASE, `users/${likedProfile}/chats`), chatId);
     }
 
-    let i = currentProf;
+    let i = currentProf + 1;
     while (matchedProfiles.includes(profiles[i])) {
       i++;
     }
-
+    console.log(matchedProfiles)
+    console.log(profiles.length)
+    console.log(i)
     setCurrentProf(i);
   };
 

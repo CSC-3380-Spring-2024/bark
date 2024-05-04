@@ -11,7 +11,6 @@ import {
   Pressable,
 } from "react-native";
 
-import DogLogo from "../assets/barkLogo.png";
 
 import {
   FIREBASE_DATABASE,
@@ -37,7 +36,7 @@ export default function Profile() {
   const [image4, setImage4] = useState<string>();
   const [editProf, editingProf] = useState<boolean>(false);
   const [settings, goToSettings] = useState<boolean>(false);
-
+  const DogLogo = require("../assets/barkLogo.png");
   const images = new Array(5).fill("");
 
   //DATABASE REFERENCE
