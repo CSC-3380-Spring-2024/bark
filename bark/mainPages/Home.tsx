@@ -16,6 +16,7 @@ import GeneratedProf from "../components/generatedProfile";
 import { useEffect, useState } from "react";
 import { push, ref, get } from "@firebase/database";
 import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
+import DogLogo from "../assets/barkLogo.png";
 const dimensions = Dimensions.get("window");
 
 export default function Home() {
@@ -98,7 +99,7 @@ export default function Home() {
       push(ref(FIREBASE_DATABASE, `chats/${chatId}/messages`), "dummy value");
     }
 
-    let i = currentProf;
+    let i = currentProf + 1;
     while (matchedProfiles.includes(profiles[i])) {
       i++;
     }
@@ -128,7 +129,7 @@ export default function Home() {
   }
 
   return (
-    <>
+    <View style={styles.mainContainer}>
       {profiles.length > 0 && profiles.length > currentProf && (
         <GeneratedProf
           uuid={profiles[currentProf]}
@@ -136,8 +137,14 @@ export default function Home() {
           accept={accept}
         />
       )}
-      {profiles.length <= currentProf && <Text>No profiles avalible</Text>}
-    </>
+      {profiles.length <= currentProf && (
+        <View style={styles.noProfile}>
+          <Text style={styles.noProfileText}>No more profiles avalible!!</Text>
+          <Text style={styles.noProfileText}>Try again later</Text>
+          <Image source={DogLogo} style={styles.logo} />
+        </View>
+      )}
+    </View>
   );
 }
 
@@ -146,5 +153,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  noProfile: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: "50%",
+  },
+  noProfileText: {
+    fontSize: 20,
+  },
+  logo: {
+    width: 200,
+    height: 200,
+    marginRight: "10%",
+  },
+  mainContainer: {
+    backgroundColor: "#EADDCA",
+    flex: 1,
   },
 });
