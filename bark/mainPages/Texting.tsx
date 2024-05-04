@@ -12,21 +12,115 @@ import {
   Image,
 } from "react-native";
 import ChatBubbleLeft from "./ChatBubbleLeft";
+import { onValue, ref, push } from "@firebase/database";
+import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
+import ChatBubbleRight from "./ChatBubbleRight";
 const sendImg = require("../assets/send button.png");
-
-export default function Texting({ chatID }: { chatID: string }) {
+export default function Texting(props: {
+  chatID: string;
+  chatSetter: Function;
+}) {
   const [height, setHeight] = useState(0);
   const [send, myText] = useState<string>();
+  const [messages, setMessages] = useState<string[]>([]);
+  const messageRef = ref(FIREBASE_DATABASE, `/chats/${props.chatID}/messages`);
+
+  const sideFunc = () => {
+    const first = props.chatID.substring(0, 28);
+    const second = props.chatID.substring(28, 56);
+    if (first === FIREBASE_AUTH.currentUser?.uid) {
+      return "0";
+    } else if (second === FIREBASE_AUTH.currentUser?.uid) {
+      return "1";
+    } else {
+      return "0";
+    }
+  };
+  const side = sideFunc();
+  onValue(messageRef, (snapshot) => {
+    console.log("Im here1");
+    const values = snapshot.val();
+    console.log(props.chatID);
+
+    const newMessages: string[] = Object.values(values).filter((message) => {
+      console.log(message);
+      return typeof message === "string";
+    }) as string[];
+    const newMessagesRemoved = newMessages.slice(1);
+    // Only update messages if the new array is different
+    if (JSON.stringify(messages) !== JSON.stringify(newMessagesRemoved)) {
+      setMessages(newMessagesRemoved);
+    }
+  });
+
+  const messageSender = async () => {
+    if (send != "") {
+      push(messageRef, `${side}` + send);
+    }
+    myText("");
+  };
+
   return (
     <View>
-      <Pressable>
-        <Text style={{ fontSize: 50 }}>Back</Text>
-      </Pressable>
+      <View
+        style={{
+          backgroundColor: "#EADDCA",
+          height: "6%",
+        }}
+      >
+        <Pressable
+          onPress={() => {
+            props.chatSetter("");
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 30,
+              width: "30%",
+              borderWidth: 3,
+              borderRadius: 10,
+              borderColor: "#895C3E",
+              color: "#895C3E",
+            }}
+          >
+            {"<"} Back
+          </Text>
+        </Pressable>
+      </View>
       {/* Makes the keyboard go above the text you are sending */}
       <KeyboardAvoidingView behavior={"height"} keyboardVerticalOffset={90}>
         {/* Makes the keyboard vanish when tapping somewhere else */}
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.bigFlex}>
+            <View style={styles.chatFlex}>
+              <ScrollView
+                ref={(ref) => (this.scrollView = ref)}
+                onContentSizeChange={(contentWidth, contentHeight) => {
+                  this.scrollView.scrollToEnd({ animated: true });
+                }}
+              >
+                <View onStartShouldSetResponder={() => true}>
+                  {messages.map((message, index) => {
+                    if (message.startsWith(side)) {
+                      return (
+                        <ChatBubbleRight
+                          key={index}
+                          message={message.slice(1)}
+                        />
+                      );
+                    } else {
+                      return (
+                        <ChatBubbleLeft
+                          key={index}
+                          message={message.slice(1)}
+                        />
+                      );
+                    }
+                  })}
+                </View>
+              </ScrollView>
+            </View>
+
             {/* Everything in the texting box */}
             <View style={styles.textingBox}>
               <TextInput
@@ -41,15 +135,9 @@ export default function Texting({ chatID }: { chatID: string }) {
             </View>
             {/* Send button */}
             <View style={styles.sendContainer}>
-              <Pressable>
+              <Pressable onPress={messageSender}>
                 <Image style={styles.sendImgStyle} source={sendImg}></Image>
               </Pressable>
-            </View>
-
-            <View style={styles.chatFlex}>
-              <ScrollView>
-                <View onStartShouldSetResponder={() => true}></View>
-              </ScrollView>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -60,7 +148,7 @@ export default function Texting({ chatID }: { chatID: string }) {
 
 const styles = StyleSheet.create({
   sendContainer: {
-    backgroundColor: "blue",
+    backgroundColor: "#895C3E",
     borderRadius: 100,
     width: 40,
     height: 40,
@@ -72,10 +160,8 @@ const styles = StyleSheet.create({
     marginRight: 7,
   },
   textingBox: {
-    borderColor: "red",
-    borderWidth: 1,
     marginTop: "auto",
-    backgroundColor: "crimson",
+    backgroundColor: "#895C3E",
     borderRadius: 15,
     paddingLeft: 20,
     paddingRight: 10,
@@ -88,17 +174,13 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   bigFlex: {
-    borderWidth: 1,
     width: "100%",
-    height: "94.5%",
+    height: "96%",
+    backgroundColor: "#EADDCA",
   },
   chatFlex: {
-    borderWidth: 1,
-    borderColor: "pink",
     width: "100%",
-    height: "92.5%",
-    position: "absolute",
-    top: 0,
+    height: "94%",
   },
   sendImgStyle: {
     width: 25,
@@ -106,7 +188,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   backButton: {
-    backgroundColor: "pink",
     width: "20%",
     height: "5%",
   },

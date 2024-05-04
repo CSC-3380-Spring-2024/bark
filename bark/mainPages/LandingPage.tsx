@@ -37,6 +37,8 @@ export default function LandingPage(props: {
       const uid = user.uid;
       console.log("User " + user.email + " with uid " + uid + " has logged in");
       props.setLoginStatus(true);
+    } else {
+      props.setLoginStatus(false);
     }
   });
 

@@ -7,17 +7,26 @@ import {
   TextInput,
 } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
-import { getAuth, updateEmail, updatePassword } from "firebase/auth";
+import {
+  getAuth,
+  sendPasswordResetEmail,
+  updateEmail,
+  updatePassword,
+  verifyBeforeUpdateEmail,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  reauthenticateWithPopup,
+  AuthCredential,
+} from "firebase/auth";
 import { ref, set } from "@firebase/database";
 import { useState } from "react";
 
 export default function Settings(props: {
   goToSettings: (arg0: boolean) => void;
 }) {
-  const auth = getAuth();
-  const user = auth.currentUser as any;
-  const [pswd, updatePswd] = useState<string>(user.email);
-  const [email, changeEmail] = useState<string>("");
+  const user = FIREBASE_AUTH.currentUser;
+  const [email, changeEmail] = useState<string>(user?.email as string);
+  const [password, passUpdate] = useState<string>("");
 
   function signOut() {
     FIREBASE_AUTH.signOut()
@@ -36,35 +45,41 @@ export default function Settings(props: {
     props.goToSettings(false);
   };
 
-  function update() {
-    var count = 0;
-    if (pswd !== "") {
-      updatePassword(user, pswd).then(
-        () => {
-          // Update successful.
-        },
-        (error) => {
-          // An error happened.
-        }
-      );
-      count++;
+  const updateEmail = async () => {
+    if (email !== "" && user) {
+      try {
+        const credential = EmailAuthProvider.credential(
+          user.email as string,
+          password
+        );
+        const response = await reauthenticateWithCredential(
+          user,
+          credential
+        ).then(() => {
+          verifyBeforeUpdateEmail(user, email);
+        });
+        console.log(response);
+        Alert.alert(
+          "Check your email for a verification message",
+          "Thank you!!"
+        );
+      } catch (error: any) {
+        console.log(error);
+      }
     }
-    if (email !== "") {
-      updateEmail(user, email);
-      count++;
+  };
+  const updatePswd = async () => {
+    if (user) {
+      try {
+        const response = await sendPasswordResetEmail(FIREBASE_AUTH, email);
+        console.log(response);
+        Alert.alert("A password reset email has been sent");
+      } catch (error: any) {
+        console.log(error);
+      }
     }
-    if (count > 0) {
-      Alert.alert("Your changes have been saved.");
-    }
-  }
+  };
 
-  // const setEmail = async () => {
-  //   // set(ref(FIREBASE_DATABASE, "users/" + user.uid), {
-  //   //   username: email,
-  //   //   email: email,
-  //   // });
-  //   user.updatePassword(pswd);
-  // };
   return (
     <View style={styles.mainContainer}>
       <View style={styles.marginHorizontal}>
@@ -75,19 +90,22 @@ export default function Settings(props: {
         <TextInput
           style={styles.textInputs}
           placeholder=" Type NEW email here"
-          onChangeText={(text) => changeEmail(text)}
-          defaultValue={email}
+          onChangeText={changeEmail}
+          //defaultValue={email}
         ></TextInput>
-        <Text style={styles.text}>Change password: </Text>
         <TextInput
-          //onChangeText={(value)=>}
           style={styles.textInputs}
-          placeholder=" Type NEW password here"
-          onChangeText={(text) => updatePswd(text)}
+          placeholder=" Type CURRENT password here"
+          onChangeText={passUpdate}
         ></TextInput>
-        {/* Save Button */}
-        <Pressable onPress={() => update()} style={styles.button}>
-          <Text style={styles.buttonText}> Save Changes </Text>
+        {/* Email verification button */}
+        <Pressable onPress={() => updateEmail()} style={styles.button}>
+          <Text style={styles.buttonText}> Send verification email </Text>
+        </Pressable>
+        <View style={{ marginVertical: "5%" }}></View>
+        {/* Update Password button */}
+        <Pressable onPress={() => updatePswd()} style={styles.button}>
+          <Text style={styles.buttonText}> Update Password </Text>
         </Pressable>
 
         {/* This is the sign out button */}
@@ -136,7 +154,7 @@ const styles = StyleSheet.create({
     borderWidth: 2.5,
     borderColor: "red",
     marginVertical: "2%",
-    marginTop: "100%",
+    marginTop: "80%",
     //justifyContent: "flex-start",
   },
   signOutButtonText: {
@@ -159,5 +177,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: "bold",
+    marginTop: "5%",
   },
 });
