@@ -37,6 +37,18 @@ export default function ChatProfile(props: {
       setDogName(snapshot.val().dogName);
     }
   });
+
+  get(ref(FIREBASE_DATABASE, `chats/${props.uid}/messages`)).then(
+    (snapshot) => {
+      const values = snapshot.val();
+      const newMessages: string[] = Object.values(values).filter((message) => {
+        console.log(message);
+        return typeof message === "string";
+      }) as string[];
+
+      setRecentMessage(newMessages[newMessages.length - 1].slice(1));
+    }
+  );
   getDownloadURL(storageRef(FIREBASE_STORAGE, `images/${id}/profileImage0`))
     .then((promise) => {
       setImg(promise);
@@ -67,7 +79,7 @@ export default function ChatProfile(props: {
           </View>
           {/* Last message sent */}
           <View>
-            <Text style={styles.textFontStyle}>Recent message</Text>
+            <Text style={styles.textFontStyle}>{recentMessage}</Text>
           </View>
         </View>
       </Pressable>
