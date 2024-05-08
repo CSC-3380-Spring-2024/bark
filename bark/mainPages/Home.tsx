@@ -142,7 +142,7 @@ export default function Home() {
       )}
       {profiles.length <= currentProf && (
         <View style={styles.noProfile}>
-          <Text style={styles.noProfileText}>No more profiles avalible!!</Text>
+          <Text style={styles.noProfileText}>No more profiles available!!</Text>
           <Text style={styles.noProfileText}>Try again later</Text>
           <Image source={DogLogo} style={styles.logo} />
         </View>
