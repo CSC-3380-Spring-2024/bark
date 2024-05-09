@@ -5,7 +5,8 @@ import ChatProfile from "../components/chatProfile";
 import { get, ref } from "@firebase/database";
 import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
 import { createStackNavigator } from "@react-navigation/stack";
-const dogImg = require("../assets/silly dog.png");
+
+var dogImg = require("../assets/silly dog.png");
 
 export default function Chat({ navigation }: { navigation: any }) {
   const [chat, setChat] = useState<boolean>(false);

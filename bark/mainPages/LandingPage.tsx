@@ -22,7 +22,8 @@ import {
 import { ref, set } from "@firebase/database";
 import { StyleSheet } from "react-native";
 
-import DogLogo from "../assets/barkLogo.png";
+//import DogLogo from "../assets/barkLogo.png";
+var DogLogo=require("../assets/barkLogo.png");
 
 export default function LandingPage(props: {
   setLoginStatus: (arg0: boolean) => void;

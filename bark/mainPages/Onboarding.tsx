@@ -182,7 +182,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: 260,
     marginLeft: 0,
-   
   },
   button: {
     alignSelf: "flex-start",

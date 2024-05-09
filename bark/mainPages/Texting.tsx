@@ -12,7 +12,7 @@ import {
   Image,
 } from "react-native";
 import ChatBubbleLeft from "./ChatBubbleLeft";
-const sendImg = require("../assets/send button.png");
+var sendImg = require("../assets/send button.png");
 
 export default function Texting({ chatID }: { chatID: string }) {
   const [height, setHeight] = useState(0);
