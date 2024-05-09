@@ -131,6 +131,7 @@ export default function Texting(props: {
                 onContentSizeChange={(event) =>
                   setHeight(event.nativeEvent.contentSize.height)
                 }
+                defaultValue={send}
               />
             </View>
             {/* Send button */}
