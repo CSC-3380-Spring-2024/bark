@@ -12,6 +12,7 @@ import { View } from "react-native-reanimated/lib/typescript/Animated";
 import { push, ref, get } from "@firebase/database";
 import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Texting from "./Texting";
 
 const Tab = createBottomTabNavigator();
 var darkerBrown = "#C4A484";

@@ -10,6 +10,7 @@ import {
   Dimensions,
   ImageBackground,
   Alert,
+  Animated,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { get as databaseGet, ref as databaseRef } from "@firebase/database";
@@ -39,6 +40,37 @@ export default function GeneratedProf({
   const [image2, setImage2] = useState<string>();
   const [image3, setImage3] = useState<string>();
   const [image4, setImage4] = useState<string>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [denyAccept, setDenyAccept] = useState<boolean>(false);
+  const [scaleValue1] = useState(new Animated.Value(1));
+  const [scaleValue2] = useState(new Animated.Value(1));
+
+  const animatedButton1 = () => {
+    Animated.timing(scaleValue1, {
+      toValue: 0.8,
+      duration: 200,
+      useNativeDriver: true,
+    }).start(() => {
+      Animated.timing(scaleValue1, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
+  const animatedButton2 = () => {
+    Animated.timing(scaleValue2, {
+      toValue: 0.8,
+      duration: 200,
+      useNativeDriver: true,
+    }).start(() => {
+      Animated.timing(scaleValue2, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
 
   const userRef = databaseRef(FIREBASE_DATABASE, `users/${uuid}/`);
 
@@ -54,6 +86,9 @@ export default function GeneratedProf({
       console.log(error);
       Alert.alert("Failed to generate profile");
     });
+  function loadScreen() {
+    setIsLoading(true);
+  }
 
   function setRightImage(uri: string, index: number) {
     switch (index) {
@@ -93,11 +128,25 @@ export default function GeneratedProf({
             setRightImage("", i);
           });
       }
+      setIsLoading(false);
     };
     getImage();
   }, [uuid]);
 
-  return (
+  return isLoading ? (
+    <ScrollView>
+      {denyAccept && (
+        <View style={styles.acceptScreen}>
+          <FontAwesome name="paw" size={24} color="black" />
+        </View>
+      )}
+      {!denyAccept && (
+        <View style={styles.denyScreen}>
+          <FontAwesome name="remove" size={24} color="black" />
+        </View>
+      )}
+    </ScrollView>
+  ) : (
     <ScrollView style={styles.container}>
       <SafeAreaView style={styles.container}>
         <View style={styles.dogNameContainer}>
@@ -136,27 +185,38 @@ export default function GeneratedProf({
             <TouchableHighlight
               onPress={() => {
                 deny();
+                // setDenyAccept(false);
+                // loadScreen();
+                animatedButton2();
               }}
               underlayColor="transparent"
             >
-              <View style={styles.view2}>
-                {/* Image for red button */}
+                {/* Image for red button and animation */}
+              <Animated.View
+                style={[styles.view2, { transform: [{ scale: scaleValue2 }] }]}
+              >
                 <FontAwesome name="remove" size={24} color="black" />
-              </View>
+              </Animated.View>
             </TouchableHighlight>
             {/* Green button for matching */}
             <TouchableHighlight
               onPress={() => {
                 accept();
+                // setDenyAccept(true);
+                // loadScreen();
+                animatedButton1();
               }}
               underlayColor="transparent"
             >
-              <View style={styles.view}>
-                {/* Image for green button */}
+                {/* Image for green button and animation*/}
+              <Animated.View
+                style={[styles.view, { transform: [{ scale: scaleValue1 }] }]}
+              >
                 <FontAwesome name="paw" size={24} color="black" />
-              </View>
+              </Animated.View>
             </TouchableHighlight>
           </View>
+
           <View style={styles.bioContainer}>
             <View style={styles.bioBox}>
               {/* Text heading for bio */}
@@ -262,5 +322,19 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: "#825D09",
     fontWeight: "bold",
+  },
+  acceptScreen: {
+    backgroundColor: "lightgreen",
+    alignItems: "center",
+    justifyContent: "center",
+    bottom: 0,
+    top: 0,
+  },
+  denyScreen: {
+    backgroundColor: "#FF3131",
+    alignItems: "center",
+    justifyContent: "center",
+    bottom: 0,
+    top: 0,
   },
 });

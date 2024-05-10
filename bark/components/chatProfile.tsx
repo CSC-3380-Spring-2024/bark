@@ -1,22 +1,55 @@
 import { View, Pressable, Image, StyleSheet, Text } from "react-native";
 import { get, ref } from "firebase/database";
 import { getDownloadURL, ref as storageRef } from "@firebase/storage";
-import { FIREBASE_DATABASE, FIREBASE_STORAGE } from "../FirebaseConfig";
+import {
+  FIREBASE_AUTH,
+  FIREBASE_DATABASE,
+  FIREBASE_STORAGE,
+} from "../FirebaseConfig";
 import { useState } from "react";
 import Texting from "../mainPages/Texting";
 import { createStackNavigator } from "@react-navigation/stack";
-export default function ChatProfile({ uid }: { uid: string }) {
+import { ScrollView } from "react-native-gesture-handler";
+export default function ChatProfile(props: {
+  uid: string;
+  chatSetter: Function;
+}) {
   const [name, setName] = useState<string>("");
   const [dogName, setDogName] = useState<string>("");
   const [recentMessage, setRecentMessage] = useState<string>("");
   const [img, setImg] = useState<string>("");
-  get(ref(FIREBASE_DATABASE, `users/${uid}`)).then((snapshot) => {
+
+  function separateUID() {
+    const first = props.uid.substring(0, 28);
+    const second = props.uid.substring(28, 56);
+    if (first === FIREBASE_AUTH.currentUser?.uid) {
+      return second;
+    } else if (second === FIREBASE_AUTH.currentUser?.uid) {
+      return first;
+    }
+  }
+
+  const id = separateUID();
+
+  get(ref(FIREBASE_DATABASE, `users/${id}`)).then((snapshot) => {
     if (snapshot.exists()) {
       setName(snapshot.val().name);
       setDogName(snapshot.val().dogName);
     }
   });
-  getDownloadURL(storageRef(FIREBASE_STORAGE, `images/${uid}/profileImage0`))
+
+  get(ref(FIREBASE_DATABASE, `chats/${props.uid}/messages`)).then(
+    (snapshot) => {
+      const values = snapshot.val();
+      const newMessages: string[] = Object.values(values).filter((message) => {
+        console.log(message);
+        return typeof message === "string";
+      }) as string[];
+
+      setRecentMessage(newMessages[newMessages.length - 1].slice(1));
+    }
+  );
+  getDownloadURL(storageRef(FIREBASE_STORAGE, `images/${id}/profileImage0`))
     .then((promise) => {
       setImg(promise);
     })
@@ -27,7 +60,12 @@ export default function ChatProfile({ uid }: { uid: string }) {
   return (
     <View>
       {/* Pressable for the chat feature. */}
-      <Pressable style={styles.chatContainer} onPress={() => {}}>
+      <Pressable
+        style={styles.chatContainer}
+        onPress={() => {
+          props.chatSetter(props.uid);
+        }}
+      >
         {/* Profile Picture */}
         <View style={styles.pfpContainer}>
           <Image style={styles.pfpStyle} source={{ uri: img }}></Image>
@@ -41,7 +79,7 @@ export default function ChatProfile({ uid }: { uid: string }) {
           </View>
           {/* Last message sent */}
           <View>
-            <Text style={styles.textFontStyle}>Recent message</Text>
+            <Text style={styles.textFontStyle}>{recentMessage}</Text>
           </View>
         </View>
       </Pressable>
