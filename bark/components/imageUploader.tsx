@@ -40,10 +40,13 @@ export function ImageUploader({ index }: { index: number }) {
   };
 
   return (
+    //Button for uploading/editing dog pictures in your account
     <Pressable onPress={imageUploader} style={styles.imageUploadContainer}>
       {image ? (
+        //Rectangle image
         <Image source={{ uri: image }} style={styles.image} />
       ) : (
+        //Plus sign symbol in the middle of rectangles
         <Text style={styles.plusSign}>+</Text>
       )}
     </Pressable>

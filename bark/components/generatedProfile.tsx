@@ -150,6 +150,7 @@ export default function GeneratedProf({
     <ScrollView style={styles.container}>
       <SafeAreaView style={styles.container}>
         <View style={styles.dogNameContainer}>
+          {/* Name of dog at top of screen */}
           <Text style={styles.dogNameText}>{dogName}</Text>
         </View>
 
@@ -159,6 +160,7 @@ export default function GeneratedProf({
             centerContent={true}
             pagingEnabled={true}
           >
+            {/* Images uploaded by other users seen on Home Page */}
             <View style={styles.dogPicsContainer}>
               {image0 && (
                 <Image style={styles.dogPics} source={{ uri: image0 }} />
@@ -179,6 +181,7 @@ export default function GeneratedProf({
           </ScrollView>
 
           <View style={styles.buttonContainer}>
+            {/* Red button for not matching */}
             <TouchableHighlight
               onPress={() => {
                 deny();
@@ -188,12 +191,14 @@ export default function GeneratedProf({
               }}
               underlayColor="transparent"
             >
+                {/* Image for red button and animation */}
               <Animated.View
                 style={[styles.view2, { transform: [{ scale: scaleValue2 }] }]}
               >
                 <FontAwesome name="remove" size={24} color="black" />
               </Animated.View>
             </TouchableHighlight>
+            {/* Green button for matching */}
             <TouchableHighlight
               onPress={() => {
                 accept();
@@ -203,6 +208,7 @@ export default function GeneratedProf({
               }}
               underlayColor="transparent"
             >
+                {/* Image for green button and animation*/}
               <Animated.View
                 style={[styles.view, { transform: [{ scale: scaleValue1 }] }]}
               >
@@ -213,7 +219,9 @@ export default function GeneratedProf({
 
           <View style={styles.bioContainer}>
             <View style={styles.bioBox}>
+              {/* Text heading for bio */}
               <Text style={styles.headings}>Bio:</Text>
+              {/* Dog bio text */}
               <Text style={styles.dogBio}>{bio}</Text>
             </View>
           </View>
@@ -309,8 +317,6 @@ const styles = StyleSheet.create({
   dogBoneImage: {
     width: 100,
     height: 50,
-    // justifyContent: "center",
-    // alignItems: "center",
   },
   dogNameText: {
     fontSize: 25,

@@ -22,7 +22,7 @@ import {
 import { ref, set } from "@firebase/database";
 import { StyleSheet } from "react-native";
 
-import DogLogo from "../assets/barkLogo.png";
+var DogLogo=require("../assets/barkLogo.png");
 
 export default function LandingPage(props: {
   setLoginStatus: (arg0: boolean) => void;
@@ -86,12 +86,15 @@ export default function LandingPage(props: {
   return (
     <View style={styles.container}>
       <View style={styles.topSection}>
+        {/*Dog Logo and Bark text*/}
         <Image source={DogLogo} style={styles.dogLogo} />
         <Text style={styles.barkText}>BARK.</Text>
       </View>
+      {/*Prevents keyboard from blocking input*/}
       <KeyboardAvoidingView style={styles.bottomSection} behavior="padding">
         <View style={styles.bottomSection}>
           <View style={styles.inputContainer}>
+            {/*Box to enter email*/}
             <TextInput
               style={styles.textFields}
               value={email}
@@ -101,6 +104,7 @@ export default function LandingPage(props: {
             />
           </View>
           <View style={styles.inputContainer}>
+            {/*Box to enter password*/}
             <TextInput
               style={styles.textFields}
               secureTextEntry={true}
@@ -112,9 +116,11 @@ export default function LandingPage(props: {
           </View>
           <View style={styles.buttonContainer}>
             <View style={styles.loginButtonWrapper}>
+              {/*Login button*/}
               <Button title="Login" onPress={() => signIn()} color="white" />
             </View>
             <View style={styles.createAccountButtonWrapper}>
+              {/*Create Account button*/}
               <Button
                 title="Create Account"
                 onPress={() => signUp()}
@@ -174,15 +180,4 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     marginBottom: 10,
     borderWidth: 3,
-    borderColor: "#895C3E",
-  },
-  textFields: {
-    borderWidth: 3,
-    borderColor: "#5C4033",
-    borderRadius: 5,
-    height: 50,
-    marginBottom: 10,
-    padding: 3,
-    fontSize: 20,
-  },
-});
+    bord
