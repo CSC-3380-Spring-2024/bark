@@ -16,6 +16,7 @@ import GeneratedProf from "../components/generatedProfile";
 import { useEffect, useState } from "react";
 import { push, ref, get } from "@firebase/database";
 import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
+const DogLogo = require("../assets/barkLogo.png");
 const dimensions = Dimensions.get("window");
 
 export default function Home() {
@@ -92,21 +93,25 @@ export default function Home() {
     console.log(currentUser && otherUserLikes.includes(currentUser));
     if (currentUser && otherUserLikes.includes(currentUser)) {
       const chatId = generateChatId(currentUser, likedProfile);
+      Alert.alert("Match found!", "Start a chat with them on the chat screen!");
       console.log("Pushing 2 firebase:D");
       push(ref(FIREBASE_DATABASE, `users/${currentUser}/chats`), chatId);
       push(ref(FIREBASE_DATABASE, `users/${likedProfile}/chats`), chatId);
+      push(ref(FIREBASE_DATABASE, `chats/${chatId}/messages`), "dummy value");
     }
 
-    let i = currentProf;
+    let i = currentProf + 1;
     while (matchedProfiles.includes(profiles[i])) {
       i++;
     }
-
+    console.log(matchedProfiles);
+    console.log(profiles.length);
+    console.log(i);
     setCurrentProf(i);
   };
 
   function generateChatId(uid1: string, uid2: string) {
-    return `${uid1}.${uid2}`;
+    return `${uid1}${uid2}`;
   }
   function deny() {
     console.log("denied");
@@ -127,7 +132,7 @@ export default function Home() {
   }
 
   return (
-    <>
+    <View style={styles.mainContainer}>
       {profiles.length > 0 && profiles.length > currentProf && (
         <GeneratedProf
           uuid={profiles[currentProf]}
@@ -135,8 +140,14 @@ export default function Home() {
           accept={accept}
         />
       )}
-      {profiles.length <= currentProf && <Text>No profiles avalible</Text>}
-    </>
+      {profiles.length <= currentProf && (
+        <View style={styles.noProfile}>
+          <Text style={styles.noProfileText}>No more profiles available!!</Text>
+          <Text style={styles.noProfileText}>Try again later</Text>
+          <Image source={DogLogo} style={styles.logo} />
+        </View>
+      )}
+    </View>
   );
 }
 
@@ -145,5 +156,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  noProfile: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: "50%",
+  },
+  noProfileText: {
+    fontSize: 20,
+  },
+  logo: {
+    width: 200,
+    height: 200,
+    marginRight: "10%",
+  },
+  mainContainer: {
+    backgroundColor: "#EADDCA",
+    flex: 1,
   },
 });

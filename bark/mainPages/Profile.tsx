@@ -11,7 +11,8 @@ import {
   Pressable,
 } from "react-native";
 
-import DogLogo from "../assets/barkLogo.png";
+var DogLogo=require("../assets/barkLogo.png");
+
 
 import {
   FIREBASE_DATABASE,
@@ -37,7 +38,7 @@ export default function Profile() {
   const [image4, setImage4] = useState<string>();
   const [editProf, editingProf] = useState<boolean>(false);
   const [settings, goToSettings] = useState<boolean>(false);
-
+  const DogLogo = require("../assets/barkLogo.png");
   const images = new Array(5).fill("");
 
   //DATABASE REFERENCE
@@ -229,19 +230,13 @@ const styles = StyleSheet.create({
   image: {
     width: 225,
     height: 300,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderRadius: 10,
     marginHorizontal: 5,
   },
   profilePic: {
     width: 100,
     height: 100,
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
+    borderRadius: 50,
     borderColor: "black",
     borderWidth: 3,
     alignSelf: "center",
@@ -251,10 +246,7 @@ const styles = StyleSheet.create({
   button: {
     borderBlockColor: "black",
     borderColor: "black",
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderRadius: 10,
     marginRight: 5,
     marginVertical: 5,
     //flexDirection:'row-reverse',
