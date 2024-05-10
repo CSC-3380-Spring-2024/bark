@@ -16,7 +16,7 @@ import GeneratedProf from "../components/generatedProfile";
 import { useEffect, useState } from "react";
 import { push, ref, get } from "@firebase/database";
 import { FIREBASE_AUTH, FIREBASE_DATABASE } from "../FirebaseConfig";
-import DogLogo from "../assets/barkLogo.png";
+const DogLogo = require("../assets/barkLogo.png");
 const dimensions = Dimensions.get("window");
 
 export default function Home() {
@@ -93,9 +93,9 @@ export default function Home() {
     console.log(currentUser && otherUserLikes.includes(currentUser));
     if (currentUser && otherUserLikes.includes(currentUser)) {
       const chatId = generateChatId(currentUser, likedProfile);
-      Alert.alert("Match found!","Start a chat with them on the chat screen!")
+      Alert.alert("Match found!", "Start a chat with them on the chat screen!");
       console.log("Pushing 2 firebase:D");
-      pusIh(ref(FIREBASE_DATABASE, `users/${currentUser}/chats`), chatId);
+      push(ref(FIREBASE_DATABASE, `users/${currentUser}/chats`), chatId);
       push(ref(FIREBASE_DATABASE, `users/${likedProfile}/chats`), chatId);
       push(ref(FIREBASE_DATABASE, `chats/${chatId}/messages`), "dummy value");
     }
@@ -104,9 +104,9 @@ export default function Home() {
     while (matchedProfiles.includes(profiles[i])) {
       i++;
     }
-    console.log(matchedProfiles)
-    console.log(profiles.length)
-    console.log(i)
+    console.log(matchedProfiles);
+    console.log(profiles.length);
+    console.log(i);
     setCurrentProf(i);
   };
 

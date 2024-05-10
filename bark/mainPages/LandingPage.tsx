@@ -22,7 +22,7 @@ import {
 import { ref, set } from "@firebase/database";
 import { StyleSheet } from "react-native";
 
-var DogLogo=require("../assets/barkLogo.png");
+var DogLogo = require("../assets/barkLogo.png");
 
 export default function LandingPage(props: {
   setLoginStatus: (arg0: boolean) => void;
@@ -180,4 +180,15 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     marginBottom: 10,
     borderWidth: 3,
-    bord
+    borderColor: "#895C3E",
+  },
+  textFields: {
+    borderWidth: 3,
+    borderColor: "#5C4033",
+    borderRadius: 5,
+    height: 50,
+    marginBottom: 10,
+    padding: 3,
+    fontSize: 20,
+  },
+});
